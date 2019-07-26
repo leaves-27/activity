@@ -1,15 +1,18 @@
 <template>
   <div class="mask-layer" v-show="isVisible">
     <div class="nav-list-wrapper" :class="{ active: isVisible }">
-      <p class="nav-title">目录 <span class="close" @click="isVisible = false"></span></p>
+      <p class="nav-title">目录 <span class="close" @click="$emit('menuHide', false)"></span></p>
       <div class="nav-container" ref="nav">
         <ul class="nav-list-content">
-          <li class="nav-item active">超值特惠</li>
-          <li class="nav-item">首单立减</li>
-          <li class="nav-item">商城活动</li>
-          <li class="nav-item">优惠券</li>
-          <li class="nav-item">降价商品</li>
-          <li class="nav-item">5折优惠</li>
+          <li
+            v-for="item in menus"
+            class="nav-item"
+            :class="{
+              'active':item.id === selectedId
+            }"
+            @click="selectedId = item.id">
+            {{ item.name }}
+          </li>
         </ul>
       </div>
     </div>
@@ -17,40 +20,43 @@
 </template>
 <script>
   export default {
+    props: ['isVisible'],
     data(){
-      return{
-        isVisible:false,
+      return {
+        menus: [{
+          id: '1',
+          name: '超值特惠'
+        }, {
+          id: '2',
+          name: '首单立减'
+        }, {
+          id: '3',
+          name: '商城活动'
+        }, {
+          id: '4',
+          name: '优惠券'
+        },{
+          id: '5',
+          name: '降价商品'
+        },{
+          id: '6',
+          name: '5折优惠'
+        }],
+        selectedId: ''
       }
     },
-    computed: {
-    },
+    computed: {},
     methods:{
 
     },
     mounted() {
-
+      const { id } = this.menus[0] || {};
+      this.selectedId = id;
     }
   }
 </script>
 
 <style scoped lang="stylus">
-  .block-item
-    position fixed
-    height 38px
-    width 38px
-    background #515151
-    z-index 999999
-    border-radius 19px
-    &.menu-block
-      bottom 15px
-      left 15px
-      background rgba(0,0,0,.6) url("../assets/nav.svg")no-repeat center /24px 24px
-    &.nav-block
-      bottom 15px
-      right 15px
-      background rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px
-
-
   .mask-layer
     position fixed
     top 0
