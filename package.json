@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build:json": "excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/8-1商品表格定.xls -o ./json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js"
   },
   "dependencies": {
     "better-scroll": "^1.15.2",
