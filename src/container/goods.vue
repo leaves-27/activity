@@ -2,60 +2,35 @@
     <div class="goods">
       <div class="pic-wrapper">
           <img
-                  style="width: 100%"
-                  :src="goodsDetail.imgPath" alt="">
+              style="width: 100%"
+              :src="good.imgPath" alt="">
       </div>
-        <div class="goods-name">{{goodsDetail.name}}</div>
-        <div class="goods-price">{{goodsDetail.price}}</div>
-        <div class="goods-limit">有效期:{{goodsDetail.limit}}</div>
+      <div class="goods-name">{{good.name}}</div>
+      <div class="goods-price">{{good.price}}</div>
+      <div class="goods-limit">有效期:{{good.limit}}</div>
     </div>
 </template>
 
 <script>
+  import goods from '../goods';
     export default {
         name: "goods",
         data(){
             return{
-                goodsId:this.$route.query.goodsId,
-                goodsDetail:{}
+                goodsId: this.$route.query.goodsId,
+
             }
         },
-        mounted() {
-            this._goodsApply(this.goodsId)
+        computed: {
+          good(){
+            return this.getDetail(this.goodsId)
+          }
         },
         methods:{
-            _goodsApply(n){
-               let goodsList = [
-                   {
-                       name:'双鹿碱性绿能量5号电池(4粒)一卡',
-                       price:'￥5.00/组',
-                       desc:'超值换购',
-                       limit:'2019.7.9-2019.7.18',
-                       imgPath:'./static/img/goods1.jpg'
-                   },
-                   {
-                       name:'威龙橡木桶7年陈酿蛇龙珠干红葡萄酒750ml',
-                       price:'￥89.00/瓶',
-                       desc:'加1元多1件',
-                       limit:'2019.7.9-2019.7.18',
-                       imgPath:'./static/img/goods2.jpg'
-                   },
-                   {
-                       name:'微果桃汁/苹果汁/芒果果汁/橙汁饮料1L',
-                       price:'￥19.60/瓶',
-                       desc:'加1元多1件',
-                       limit:'2019.7.9-2019.7.18',
-                       imgPath:'./static/img/goods3.jpg'
-                   },
-                   {
-                       name:'百梁桥外婆de柴火饭10kg',
-                       price:'￥128.80/袋',
-                       desc:'加1元多1件',
-                       limit:'2019.7.9-2019.7.18',
-                       imgPath:'./static/img/goods4.jpg'
-                   }
-               ]
-               this.goodsDetail = goodsList[n]
+          getDetail(id){
+              goods.find(()=>{
+                return item.id == id;
+              })
             }
         }
     }

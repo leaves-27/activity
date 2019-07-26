@@ -14,9 +14,9 @@
               }'
             >
               <div
-                v-for="subItem in item"
+                v-for="subItem in item.items"
                 @click="clickHanlder(subItem)"
-                :class="`good-item_${subItem.id}`"></div>
+                :class="`good-item good-item_${subItem.id}`"></div>
             </div>
           </div>
       </div>
@@ -39,6 +39,7 @@
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
     import pages from '../pages'
+    import '../style/1.css';
 
     export default {
         name: "poster",
@@ -112,57 +113,53 @@
 </script>
 
 <style scoped lang="stylus">
-  .poster
+  .poster{
     position absolute
     width 100%
     height 100%
     overflow hidden
+  }
+
   .poster_main{
     height: 100%;width: 100%
   }
 
-  .container
+  .container{
     display flex
     width 300%
     height 100%
+  }
 
-  .goods
+  .goods{
     flex 1
     height 100%
     position relative;
     background-repeat: no-repeat;
     background-positon: center;
     background-size: contain;
-
-  .good-item_1_1
-   position absolute
-   left 0
-   bottom 2%
-   height 18%
-   width 33%
-  .good-item_1_2
-    position absolute
-    width 22%
-    height 14%
-    top 2%
-    left 2%
-
-  .footer_button
+  }
+  .good-item{
+    border: 1px solid #ff3d00;
+  }
+  .footer_button{
     position fixed
     height 38px
     width 38px
     background #515151
     z-index 999999
     border-radius 19px
-    &.menu-block
-      bottom 15px
-      left 15px
-      background rgba(0,0,0,.6) url("../assets/nav.svg")no-repeat center /24px 24px
-    &.nav-block
-      bottom 15px
-      right 15px
-      background rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px
-  .paging
+  }
+  .menu-block{
+    bottom 15px
+    left 15px
+    background rgba(0,0,0,.6) url("../assets/nav.svg")no-repeat center /24px 24px
+  }
+  .nav-block{
+    bottom 15px
+    right 15px
+    background rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px
+  }
+  .paging{
     position fixed
     bottom 24px
     left calc(50% - 26px)
@@ -175,4 +172,5 @@
     font-size 12px
     line-height 24px
     z-index 100000
+  }
 </style>

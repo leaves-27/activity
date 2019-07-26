@@ -1,0 +1,21 @@
+.good-item_1_1{
+  width: 33%;
+  height: 18%;
+  position: absolute;
+  left: 0;
+  bottom: 2%;
+}
+.good-item_1_2{
+  width: 33%;
+  height: 14%;
+  position: absolute;
+  left: 33%;
+  bottom: 2%;
+}
+.good-item_1_3{
+  width: 33%;
+  height: 14%;
+  position: absolute;
+  left: 66%;
+  bottom: 2%;
+}

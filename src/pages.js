@@ -9,6 +9,10 @@ export default [{
     id: '1_2',
     imgUrl: '',
     isPeriod: false,
+  }, {
+    id: '1_3',
+    imgUrl: '',
+    isPeriod: false,
   }]
 }, {
   id: '2',
@@ -19,6 +23,10 @@ export default [{
     isPeriod: false,
   }, {
     id: '2_2',
+    imgUrl: '',
+    isPeriod: false,
+  }, {
+    id: '2_3',
     imgUrl: '',
     isPeriod: false,
   }]
