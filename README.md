@@ -30,6 +30,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - 2.应用组件结构拆分---即将页面和组件分割开来。
 - [x] 将页面和组件进行分割。 
 - [x] 调整poster页面结构。
+<br />
+
 
 - 3.修正滚动功能;
 - [x] 滚动元素容器大小修正为根据元素内容多少自动扩展。
