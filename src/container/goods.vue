@@ -3,37 +3,37 @@
       <div class="pic-wrapper">
           <img
               style="width: 100%"
-              :src="good.imgPath" alt="">
+              :src="imgPath" alt="">
       </div>
       <div class="goods-name">{{good.name}}</div>
       <div class="goods-price">{{good.price}}</div>
       <div class="goods-limit">有效期:{{good.limit}}</div>
     </div>
 </template>
-
 <script>
-  import goods from '../goods';
-    export default {
-        name: "goods",
-        data(){
-            return{
-                goodsId: this.$route.query.goodsId,
-
-            }
-        },
-        computed: {
-          good(){
-            return this.getDetail(this.goodsId)
+  import axios from 'axios';
+  export default {
+      name: "goods",
+      data(){
+          return{
+              good: {},
           }
-        },
-        methods:{
-          getDetail(id){
-              goods.find(()=>{
-                return item.id == id;
-              })
-            }
-        }
-    }
+      },
+      methods:{},
+      mounted() {
+        const { pageId = '', id = '' } = this.$router.query;
+        axios.get(`/static/json/${pageId}.json`).then((result) => {
+          const { data = [] } = result;
+          const good = data.find((item)=>{
+            return item.id == id;
+          }) || {};
+          this.good = {
+            ...good,
+            imgPath: `static/img/${pageId}/${id}.jpg`
+          };
+        });
+      }
+  }
 </script>
 
 <style scoped lang="stylus">

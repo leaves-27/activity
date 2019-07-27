@@ -9,9 +9,9 @@
             <div
               v-for="(item, index) in pages"
               class="goods"
-              :style='{
-                backgroundImage: `url(${item.imgUrl})`,
-              }'
+              :style="{
+                backgroundImage: getBackgroundImage(item),
+              }"
             >
               <div
                 v-for="(subItem, subIndex) in item.items"
@@ -36,9 +36,10 @@
 </template>
 
 <script>
+    import axios from 'axios';
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
-    import pages from '../pages'
+    // import pages from '../pages'
     import '../style/page-1.css';
 
     export default {
@@ -50,7 +51,7 @@
             return {
                 isVisible:false,
                 page: 1,
-                pages
+                pages: []
             }
         },
         computed: {
@@ -93,21 +94,35 @@
               });
               bs.on('scroll', (pos) => {
                 const { x: scrollDistance } = pos;
-                const d = this.boxWidth/3;
-                const scrollX = Math.abs(scrollDistance)
-
-                if(scrollX <= d){
-                  this.page = 1
-                }else if(scrollX>d&&scrollX<2*d){
-                  this.page = 2
-                }else {
-                  this.page = 3
-                }
+                const scrollX = Math.abs(scrollDistance);
+                this.page = Math.floor(scrollX / this.itemWidth) + 1;
               });
+            },
+            createSheetNames(){
+              const arr  = [];
+              for(let i = 1; i <= 12; i++ ){
+                arr.push('P'+i);
+              }
+              return arr;
+            },
+            getBackgroundImage(item){
+              return `url(/static/img/page/${item.id}.jpg)`;
             }
         },
         mounted() {
-          this.initScroll();
+          const sheetNames = this.createSheetNames();
+          sheetNames.forEach((item)=>{
+            axios.get(`/static/json/${item}.json`).then((result)=>{
+              const { data = [] } = result;
+              this.pages.push({
+                id: item,
+                items: data
+              });
+            });
+          });
+          setTimeout(()=>{
+            this.initScroll();
+          }, 2000);
         }
     }
 </script>

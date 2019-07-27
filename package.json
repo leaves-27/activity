@@ -11,6 +11,7 @@
     "build:json": "excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/8-1.xlsx -o ./static/json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "better-scroll": "^1.15.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
