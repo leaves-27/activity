@@ -65,8 +65,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [ ] 即商品图名称应该和生成的json文件中商品ID保持一致。
 
 - 9.修正目录
-- [x](1)修正目录的选中修改
-- [ ] (2)修正目录选中的目录对应的内容
+- [x] 修正目录的选中修改
+- [ ] 修正目录选中的目录对应的内容
 
 - 10.列表方式查看商品  
 
