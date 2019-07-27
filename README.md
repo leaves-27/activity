@@ -25,6 +25,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] 基础的excel文件到json文件功能。
 - [x] 将excel中中文字段名映射到代码中使用的字段名。
 - [x] 若excel表中没有可用的id，则根据表名和商品顺序自动生成对应商品id。
+&nbsp;
 
 - 2.应用组件结构拆分---即将页面和组件分割开来。
 - [x] 将页面和组件进行分割。 
