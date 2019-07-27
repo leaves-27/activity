@@ -30,11 +30,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] 将页面和组件进行分割。 
 - [x] 调整poster页面结构。
 
-- .修正滚动功能;
+- 3.修正滚动功能;
 - [x] 滚动元素容器大小修正为根据元素内容多少自动扩展。
 - [x] 滚动元素根据页面高度进行计算。
 - [x] 背景图进行缩放处理。
-- [x] 滚动过程中的当前页码不对.
+- [x] 滚动过程中的当前页码不对.       
 
 - 4.根据生成的对应json来渲染滚动页面。
 - [x] 请求数据
@@ -42,7 +42,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 - 5.根据传过来的参数获取相应json文件渲染详情页面。
 - [x] 请求数据
-- [x] 映射渲染数据字段
+- [x] 映射渲染数据字段         
 
 - 6.画锚点位置。
 - [x] P1
@@ -69,6 +69,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [] (2)修正目录选中的目录对应的内容
 
 - 10.列表方式查看商品  
+
+--------------------
 
 注：
 - []  表示未完成
