@@ -15,7 +15,7 @@
             >
               <div
                 v-for="(subItem, subIndex) in item.items"
-                @click="clickHanlder(subItem)"
+                @click="clickHanlder(item.id, subItem.id)"
                 :class="`good-item good-item_${index + 1}-${subIndex + 1}`"></div>
             </div>
           </div>
@@ -39,7 +39,6 @@
     import axios from 'axios';
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
-    // import pages from '../pages'
     import '../style/page-1.css';
 
     export default {
@@ -51,7 +50,8 @@
             return {
                 isVisible:false,
                 page: 1,
-                pages: []
+                pages: [],
+                overDates: {}
             }
         },
         computed: {
@@ -68,8 +68,12 @@
           }
         },
         methods:{
-            clickHanlder(){
-              if(isPeriod){
+            clickHanlder(pageId, goodId){
+              const isOverDate = this.overDates[pageId].find((id)=>{
+                return goodId === id
+              });
+
+              if(isOverDate){
                 alert(`您选择的此商品活动已过期`);
                 return;
               }
@@ -119,6 +123,10 @@
                 items: data
               });
             });
+          });
+          axios.get(`/static/json/overDates.json`).then((result)=>{
+            const { data = [] } = result;
+            this.overDates = data;
           });
           setTimeout(()=>{
             this.initScroll();

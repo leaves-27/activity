@@ -42,6 +42,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 4. 根据生成的对应json来渲染滚动页面。
 - [x] 请求数据
 - [x] 映射渲染数据字段
+- [ ] 确定哪些商品需要提示下架没有了
 <br />
 
 5. 根据传过来的参数获取相应json文件渲染详情页面。
