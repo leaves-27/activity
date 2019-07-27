@@ -68,8 +68,19 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] 即背景图id要和表名称保持一致。
 <br />
 
-8. 根据生成的对应商品id修改商品图的名称
-- [ ] 即商品图名称应该和生成的json文件中商品ID保持一致。
+8. 根据生成的对应商品id修改商品图的名称--即商品图名称应该和生成的json文件中商品ID保持一致。
+- [ ] P1
+- [ ] P2
+- [ ] P3
+- [ ] P4
+- [ ] P5
+- [ ] P6
+- [ ] P7
+- [ ] P8
+- [ ] P9
+- [ ] P10
+- [ ] P11
+- [ ] P12
 <br />
 
 9. 修正目录
