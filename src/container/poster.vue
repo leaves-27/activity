@@ -7,16 +7,16 @@
             :style="{ width: boxWidth + 'px' }"
             class="container" >
             <div
-              v-for="item in pages"
+              v-for="(item, index) in pages"
               class="goods"
               :style='{
                 backgroundImage: `url(${item.imgUrl})`,
               }'
             >
               <div
-                v-for="subItem in item.items"
+                v-for="(subItem, subIndex) in item.items"
                 @click="clickHanlder(subItem)"
-                :class="`good-item good-item_${subItem.id}`"></div>
+                :class="`good-item good-item_${index + 1}-${subIndex + 1}`"></div>
             </div>
           </div>
       </div>
@@ -39,7 +39,7 @@
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
     import pages from '../pages'
-    import '../style/1.css';
+    import '../style/page-1.css';
 
     export default {
         name: "poster",
