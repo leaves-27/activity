@@ -3,7 +3,7 @@
       <div class="pic-wrapper">
           <img
               style="width: 100%"
-              :src="imgPath" alt="">
+              :src="good.imgPath" alt="">
       </div>
       <div class="goods-name">{{good.name}}</div>
       <div class="goods-price">{{good.price}}</div>
@@ -21,15 +21,15 @@
       },
       methods:{},
       mounted() {
-        const { pageId = '', id = '' } = this.$router.query;
+        const { pageId = '', goodId = '' } = this.$route.query || {};
         axios.get(`/static/json/${pageId}.json`).then((result) => {
           const { data = [] } = result;
           const good = data.find((item)=>{
-            return item.id == id;
+            return item.id == goodId;
           }) || {};
           this.good = {
             ...good,
-            imgPath: `static/img/${pageId}/${id}.jpg`
+            imgPath: `static/img/${pageId.toLowerCase()}/${goodId}.jpg`
           };
         });
       }
@@ -46,7 +46,7 @@
             background #ffffff
         .goods-name
             background #ffffff
-            height 22px
+            margin-bottom: 20px;
             line-height 22px
             padding-left 12px
             text-align left

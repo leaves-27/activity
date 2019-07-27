@@ -40,6 +40,7 @@
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
     import '../style/page-1.css';
+    import '../style/page-2.css';
 
     export default {
         name: "poster",
@@ -69,9 +70,11 @@
         },
         methods:{
             clickHanlder(pageId, goodId){
+
               const isOverDate = this.overDates[pageId].find((id)=>{
                 return goodId === id
               });
+              console.log('isOverDate:', isOverDate);
 
               if(isOverDate){
                 alert(`您选择的此商品活动已过期`);
@@ -80,7 +83,8 @@
               this.$router.push({
                 path:'/goods',
                 query:{
-                  goodsId: n
+                  pageId,
+                  goodId
                 }
               })
             },
