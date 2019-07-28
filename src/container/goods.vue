@@ -44,9 +44,9 @@
         background #f2f2f2
         .pic-wrapper
             background #ffffff
+            padding-bottom 20px
         .goods-name
             background #ffffff
-            margin-bottom: 20px;
             line-height 22px
             padding-left 12px
             text-align left
