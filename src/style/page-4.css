@@ -14,7 +14,7 @@
   bottom: 85%;
 }
 .good-item_4-3{
-  width: 22%;
+  width: 20%;
   left: 44%;
 
   height: 12%;
@@ -23,7 +23,7 @@
 
 .good-item_4-4{
   width: 22%;
-  left: 66%;
+  left: 64%;
 
   height: 12%;
   bottom: 85%;
@@ -143,21 +143,13 @@
   bottom: 15%;
 }
 .good-item_4-20{
-  width: 50%;
-  left: 60%;
-
-  height: 26%;
-  bottom: 0%;
-}
-
-.good-item_4-21{
   width: 22%;
   left: 0%;
 
   height: 14%;
   bottom: 0%;
 }
-.good-item_4-22{
+.good-item_4-21{
   width: 18%;
   left: 22%;
 
@@ -165,10 +157,19 @@
   bottom: 0%;
 }
 
-.good-item_4-23{
+.good-item_4-22{
   width: 18%;
   left: 40%;
 
   height: 14%;
   bottom: 0%;
 }
+.good-item_4-23{
+  width: 50%;
+  left: 60%;
+
+  height: 26%;
+  bottom: 0%;
+}
+
+

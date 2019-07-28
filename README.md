@@ -118,8 +118,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] P7
 - [x] P8
 - [x] P9
-- [ ] P10
-- [ ] P11
+- [x] P10
+- [x] P11
 - [x] P12
 --------------------
 
