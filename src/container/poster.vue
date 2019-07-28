@@ -41,6 +41,7 @@
     import Menu from '../components/menu';
     import '../style/page-1.css';
     import '../style/page-2.css';
+    import '../style/page-3.css';
 
     export default {
         name: "poster",
