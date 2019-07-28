@@ -56,7 +56,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] P3
 - [x] P4
 - [x] P5
-- [ ] P6
+- [x] P6
 - [ ] P7
 - [ ] P8
 - [ ] P9
