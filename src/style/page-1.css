@@ -1,21 +1,19 @@
 .good-item_1-1{
   width: 33%;
   height: 18%;
-  position: absolute;
   left: 0;
   bottom: 2%;
 }
 .good-item_1-2{
   width: 33%;
   height: 14%;
-  position: absolute;
+
   left: 33%;
   bottom: 2%;
 }
 .good-item_1-3{
   width: 33%;
   height: 14%;
-  position: absolute;
   left: 66%;
   bottom: 2%;
 }

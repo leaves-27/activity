@@ -132,9 +132,7 @@
             const { data = [] } = result;
             this.overDates = data;
           });
-          setTimeout(()=>{
-            this.initScroll();
-          }, 2000);
+          this.initScroll();
         }
     }
 </script>
@@ -167,6 +165,7 @@
   }
   .good-item{
     border: 1px solid #ff3d00;
+    position: absolute;
   }
   .footer_button{
     position fixed
