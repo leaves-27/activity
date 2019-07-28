@@ -90,6 +90,20 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 <br />
 
 10. 列表方式查看商品  
+
+11. 修正Excel中的数据-----即将相同产品相同属性不是在同一列同一单元格的修正为同一列的同一单元格
+- [x] P1
+- [x] P2
+- [ ] P3
+- [ ] P4
+- [ ] P5
+- [ ] P6
+- [ ] P7
+- [ ] P8
+- [ ] P9
+- [ ] P10
+- [ ] P11
+- [ ] P12
 --------------------
 
 注：
