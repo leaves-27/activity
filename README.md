@@ -114,13 +114,13 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [ ] P3
 - [ ] P4
 - [ ] P5
-- [ ] P6
-- [ ] P7
-- [ ] P8
-- [ ] P9
+- [x] P6
+- [x] P7
+- [x] P8
+- [x] P9
 - [ ] P10
 - [ ] P11
-- [ ] P12
+- [x] P12
 --------------------
 
 注：
