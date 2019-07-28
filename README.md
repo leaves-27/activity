@@ -58,12 +58,12 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] P4
 - [x] P5
 - [x] P6
-- [ ] P7
-- [ ] P8
-- [ ] P9
+- [x] P7
+- [x] P8
+- [x] P9
 - [ ] P10
 - [ ] P11
-- [ ] P12
+- [x] P12
 
 (2)校正商品数据和商品瞄点位置不对应的情况
 - [x] P1
@@ -72,9 +72,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [ ] P4
 - [ ] P5
 - [ ] P6
-- [ ] P7
-- [ ] P8
-- [ ] P9
+- [x] P7
+- [x] P8
+- [x] P9
 - [ ] P10
 - [ ] P11
 - [ ] P12

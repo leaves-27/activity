@@ -54,7 +54,6 @@
             font-size 14px
         .goods-price
             background #ffffff
-            height 27px
             text-align left
             padding-left 12px
             line-height 27px

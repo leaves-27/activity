@@ -44,6 +44,9 @@
     import '../style/page-3.css';
     import '../style/page-4.css';
     import '../style/page-5.css';
+    import '../style/page-7.css';
+    import '../style/page-8.css';
+    import '../style/page-9.css';
 
     export default {
         name: "poster",
