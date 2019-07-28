@@ -51,7 +51,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 <br />
 
 6. 画锚点位置。
-(1)画位置
+(1)画出所有瞄点的大概位置
 - [x] P1
 - [x] P2
 - [x] P3
@@ -64,6 +64,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [ ] P10
 - [ ] P11
 - [ ] P12
+
 (2)校正商品数据和商品瞄点位置不对应的情况
 - [x] P1
 - [x] P2
