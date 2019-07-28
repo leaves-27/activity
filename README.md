@@ -52,10 +52,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 6. 画锚点位置。
 - [x] P1
-- [ ] P2
-- [ ] P3
-- [ ] P4
-- [ ] P5
+- [x] P2
+- [x] P3
+- [x] P4
+- [x] P5
 - [ ] P6
 - [ ] P7
 - [ ] P8
