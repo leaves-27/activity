@@ -51,6 +51,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 <br />
 
 6. 画锚点位置。
+(1)画位置
 - [x] P1
 - [x] P2
 - [x] P3
@@ -63,6 +64,20 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [ ] P10
 - [ ] P11
 - [ ] P12
+(2)校正商品数据和商品瞄点位置不对应的情况
+- [x] P1
+- [x] P2
+- [ ] P3
+- [ ] P4
+- [ ] P5
+- [ ] P6
+- [ ] P7
+- [ ] P8
+- [ ] P9
+- [ ] P10
+- [ ] P11
+- [ ] P12
+
 <br />
 
 7. 根据表名称修改页面背景图名称
@@ -91,7 +106,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 10. 列表方式查看商品  
 
-11. 修正Excel中的数据-----即将相同产品相同属性不是在同一列同一单元格的修正为同一列的同一单元格
+11. 修正Excel中的数据
+将相同产品相同属性不是在同一列同一单元格的修正为同一列的同一单元格
 - [x] P1
 - [x] P2
 - [ ] P3
