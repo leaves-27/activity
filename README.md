@@ -61,23 +61,39 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] P7
 - [x] P8
 - [x] P9
-- [ ] P10
-- [ ] P11
+- [x] P10
+- [x] P11
 - [x] P12
 
 (2)校正商品数据和商品瞄点位置不对应的情况
+(1)根据excel表调整样式顺序
 - [x] P1
 - [x] P2
-- [ ] P3
-- [ ] P4
-- [ ] P5
-- [ ] P6
+- [x] P3
+- [x] P4
+- [x] P5
+- [x] P6
 - [x] P7
 - [x] P8
 - [x] P9
-- [ ] P10
-- [ ] P11
-- [ ] P12
+- [x] P10
+- [x] P11
+- [x] P12
+
+(2)修正Excel表同一商品占多行引起生成数据变多的情况:
+即合并相同商品占的单元格
+- [x] P1
+- [x] P2
+- [x] P3
+- [x] P4
+- [x] P5
+- [x] P6
+- [x] P7
+- [x] P8
+- [x] P9
+- [x] P10
+- [x] P11
+- [x] P12
 
 <br />
 
@@ -106,21 +122,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 <br />
 
 10. 列表方式查看商品  
-
-11. 修正Excel中的数据
-将相同产品相同属性不是在同一列同一单元格的修正为同一列的同一单元格
-- [x] P1
-- [x] P2
-- [x] P3
-- [x] P4
-- [x] P5
-- [x] P6
-- [x] P7
-- [x] P8
-- [x] P9
-- [x] P10
-- [x] P11
-- [x] P12
 --------------------
 
 注：
