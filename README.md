@@ -111,9 +111,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 将相同产品相同属性不是在同一列同一单元格的修正为同一列的同一单元格
 - [x] P1
 - [x] P2
-- [ ] P3
-- [ ] P4
-- [ ] P5
+- [x] P3
+- [x] P4
+- [x] P5
 - [x] P6
 - [x] P7
 - [x] P8
