@@ -172,7 +172,7 @@
     background-size: contain;
   }
   .good-item{
-    border: 1px solid #ff3d00;
+    /*border: 1px solid #ff3d00;*/
     position: absolute;
   }
   .footer_button{
