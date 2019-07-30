@@ -10,7 +10,7 @@
             :class="{
               'active':item.id === selectedId
             }"
-            @click="selectedId = item.id">
+            @click="$emit('select', item.id)">
             {{ item.name }}
           </li>
         </ul>
@@ -20,39 +20,11 @@
 </template>
 <script>
   export default {
-    props: ['isVisible'],
-    data(){
-      return {
-        menus: [{
-          id: '1',
-          name: '超值特惠'
-        }, {
-          id: '2',
-          name: '首单立减'
-        }, {
-          id: '3',
-          name: '商城活动'
-        }, {
-          id: '4',
-          name: '优惠券'
-        },{
-          id: '5',
-          name: '降价商品'
-        },{
-          id: '6',
-          name: '5折优惠'
-        }],
-        selectedId: ''
-      }
-    },
+    props: ['isVisible', 'menus', 'selectedId'],
     computed: {},
     methods:{
 
     },
-    mounted() {
-      const { id } = this.menus[0] || {};
-      this.selectedId = id;
-    }
   }
 </script>
 

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import poster from '../container/poster'
-import goods from '../container/goods'
+import goodDetail from '../container/good-detail'
 
 Vue.use(Router)
 
@@ -13,9 +13,9 @@ export default new Router({
       component: poster
     },
     {
-      path: '/goods',
-      name: 'goods',
-      component: goods
+      path: '/good-detail',
+      name: 'goodDetail',
+      component: goodDetail
     }
   ]
 })

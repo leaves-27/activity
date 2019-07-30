@@ -29,7 +29,10 @@
       </div>
       <transition name="fade">
         <Menu
+          :menus="menus"
+          :selected-id="selectedId"
           :is-visible="isVisible"
+          @select="selectHandler"
           @menuHide="isVisible = false" />
       </transition>
     </div>
@@ -57,10 +60,17 @@
         },
         data(){
             return {
-                isVisible:false,
-                page: 1,
                 pages: [],
-                overDates: {}
+                menus: [{
+                  id: '1',
+                  name: '超值特惠'
+                }, {
+                  id: '2',
+                  name: '韩国节'
+                }],
+                selectedId: '1',
+                page: 1,
+                isVisible:false,
             }
         },
         computed: {
@@ -78,18 +88,26 @@
         },
         methods:{
             clickHanlder(pageId, goodId){
-
-              const isOverDate = this.overDates[pageId].find((id)=>{
-                return goodId === id
+              const { items = [] } = this.pages.find((item)=>{
+                return item.id === pageId;
               });
-              console.log('isOverDate:', isOverDate);
 
-              if(isOverDate){
-                alert(`您选择的此商品活动已过期`);
-                return;
+              const { limit = '' } = items.find((item)=>{
+                return goodId === item.id
+              }) || {};
+              const dates = limit.split('-');
+              const date = dates[1];
+
+              if(date){
+                const timestamp = (new Date(date.replace('.','-'))).getTime();
+                const currentTimeTimestamp = new Date().getTime();
+                if (currentTimeTimestamp > timestamp) {
+                  alert(`您选择的此商品活动已过期`);
+                  return;
+                }
               }
               this.$router.push({
-                path:'/goods',
+                path:'/good-detail',
                 query:{
                   pageId,
                   goodId
@@ -123,24 +141,55 @@
             },
             getBackgroundImage(item){
               return `url(/static/img/page/${item.id}.jpg)`;
+            },
+            selectHandler(id){
+              this.selectedId = id;
+              this.page = 1;
+              this.isVisible = false;
+              this.getData(id);
+            },
+            getRequest(){
+              const arr = [];
+              const sheetNames = this.createSheetNames();
+              sheetNames.forEach((item)=>{
+                arr.push(axios.get(`/static/json/${item}.json`))
+              });
+              return arr;
+            },
+            getData(id){
+              if (id==='1') {
+                Promise.all(this.getRequest()).then((results = [])=>{
+                  const pages = [];
+                  results.forEach((item) => {
+                    const { data = [] } = item;
+                    pages.push({
+                      id: item,
+                      items: data
+                    });
+                  });
+
+                  this.pages.splice(0, this.pages.length);
+                  this.pages.push(...pages);
+                })
+              } else {
+                const pages = [];
+                axios.get(`/static/json/Korea.json`).then((result)=>{
+                  const { data = [] } = result;
+                  pages.push({
+                    id: 'Korea',
+                    items: data
+                  });
+                  this.pages.splice(0, this.pages.length);
+                  this.pages.push(...pages);
+                });
+              }
             }
         },
         mounted() {
-          const sheetNames = this.createSheetNames();
-          sheetNames.forEach((item)=>{
-            axios.get(`/static/json/${item}.json`).then((result)=>{
-              const { data = [] } = result;
-              this.pages.push({
-                id: item,
-                items: data
-              });
-            });
-          });
-          axios.get(`/static/json/overDates.json`).then((result)=>{
-            const { data = [] } = result;
-            this.overDates = data;
-          });
           this.initScroll();
+          const { id } = this.menus[0] || {};
+          this.selectedId = id;
+          this.getData(id);
         }
     }
 </script>
