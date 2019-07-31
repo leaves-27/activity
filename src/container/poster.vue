@@ -7,7 +7,7 @@
             :style="{ width: boxWidth + 'px' }"
             class="container" >
             <div
-              v-for="(item, index) in pages"
+              v-for="(item, index) in formatPages"
               class="goods"
               :style="{
                 backgroundImage: getBackgroundImage(item),
@@ -44,6 +44,7 @@
     import axios from 'axios';
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
+    import { getPages, createSheetNames } from '../utils';
     import '../style/page-1.css';
     import '../style/page-2.css';
     import '../style/page-3.css';
@@ -61,8 +62,12 @@
           Menu,
         },
         data(){
+            const pages = getPages();
             return {
-                pages: [],
+                pages,
+                page2: {
+                  'Korea': []
+                },
                 menus: [{
                   id: '1',
                   name: '超值特惠'
@@ -76,8 +81,27 @@
             }
         },
         computed: {
+          formatPages(){
+            let page;
+            switch (this.selectedId) {
+              case '2':
+                page = this.page2;
+                break;
+              default:
+                page = this.pages;
+            }
+            const arr = [];
+            Object.keys(page).forEach((item) => {
+              arr.push({
+                id: item,
+                items: page[item]
+              })
+            });
+            return arr;
+          },
           boxWidth(){
-            return this.itemWidth  * this.pages.length;
+            const len = Object.keys(this.pages).length;
+            return this.itemWidth  * len;
           },
           itemWidth(){
             const image = {
@@ -90,9 +114,7 @@
         },
         methods:{
             clickHanlder(pageId, goodId){
-              const { items = [] } = this.pages.find((item)=>{
-                return item.id === pageId;
-              });
+              const items = this.pages[pageId] || [];
 
               const { limit = '' } = items.find((item)=>{
                 return goodId === item.id
@@ -149,46 +171,38 @@
               this.isVisible = false;
               this.getData(id);
             },
-            createSheetNames(){
-              const arr  = [];
-              for(let i = 1; i <= 12; i++ ){
-                arr.push('P'+i);
-              }
-              return arr;
-            },
             getRequest(){
               const arr = [];
-              const sheetNames = this.createSheetNames();
-              sheetNames.forEach((item)=>{
+              const sheetNames = createSheetNames();
+              sheetNames.forEach((item) => {
                 arr.push(axios.get(`/static/json/${item}.json`))
               });
               return arr;
             },
             getData(id){
-              if (id==='1') {
+              if (id === '1') {
                 Promise.all(this.getRequest()).then((results = [])=>{
-                  const pages = [];
                   results.forEach((item) => {
                     const { data = [] } = item;
-                    pages.push({
-                      id: item,
-                      items: data
-                    });
+                    if (data.length > 0){
+                      const { id = '' } = data[0] || {};
+                      const pageId = id.split('_')[1];
+                      this.pages[pageId].splice(0, this.pages[pageId].length);
+                      this.pages[pageId].push(...data);
+                    }
                   });
-
-                  this.pages.splice(0, this.pages.length);
-                  this.pages.push(...pages);
                 })
               } else {
-                const pages = [];
                 axios.get(`/static/json/Korea.json`).then((result)=>{
                   const { data = [] } = result;
-                  pages.push({
-                    id: 'Korea',
-                    items: data
-                  });
-                  this.pages.splice(0, this.pages.length);
-                  this.pages.push(...pages);
+                  if (data.length > 0){
+                    const { id = '' } = data[0] || {};
+                    const pageId = id.split('_')[1];
+                    console.log('data:', data);
+                    console.log('pageId:', pageId);
+                    this.page2[pageId].splice(0, this.page2[pageId].length);
+                    this.page2[pageId].push(...data);
+                  }
                 });
               }
             }
