@@ -106,9 +106,15 @@
   }
   .good_item{
     width: 50%;
+    font-size: 0px;
   }
   .good_item img{
     width: 100%;
+    border: 1px solid #ffffff;
+    border-top: none;
+    display: block;
+    font-size: 0px;
+    line-height: normal;
   }
 
 
