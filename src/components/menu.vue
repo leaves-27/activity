@@ -11,7 +11,7 @@
               'active':item.id === selectedId
             }"
             @click="$emit('select', item.id)">
-            {{ item.name }}
+            {{ item.desc  }}
           </li>
         </ul>
       </div>
@@ -22,9 +22,7 @@
   export default {
     props: ['isVisible', 'menus', 'selectedId'],
     computed: {},
-    methods:{
-
-    },
+    methods:{},
   }
 </script>
 

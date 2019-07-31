@@ -7,14 +7,14 @@
             :style="{ width: boxWidth + 'px' }"
             class="container" >
             <div
-              v-for="(item, index) in formatPages"
+              v-for="(item, index) in pageNames"
               class="goods"
               :style="{
                 backgroundImage: getBackgroundImage(item),
               }"
             >
               <div
-                v-for="(subItem, subIndex) in item.items"
+                v-for="(subItem, subIndex) in items[item]"
                 @click="clickHanlder(item.id, subItem.id)"
                 :class="`good-item good-item_${index + 1}-${subIndex + 1}`"></div>
             </div>
@@ -62,18 +62,18 @@
           Menu,
         },
         data(){
-            const pages = getPages();
+            // const pages = getPages();
             return {
-                pages,
-                page2: {
-                  'Korea': []
-                },
                 menus: [{
                   id: '1',
-                  name: '超值特惠'
+                  name: 'preferential',
+                  desc: '超值特惠',
+                  items: {},
                 }, {
                   id: '2',
-                  name: '韩国节'
+                  name: 'korea',
+                  desc: '韩国节',
+                  items: {},
                 }],
                 selectedId: '1',
                 page: 1,
@@ -81,26 +81,22 @@
             }
         },
         computed: {
-          formatPages(){
-            let page;
-            switch (this.selectedId) {
-              case '2':
-                page = this.page2;
-                break;
-              default:
-                page = this.pages;
-            }
-            const arr = [];
-            Object.keys(page).forEach((item) => {
-              arr.push({
-                id: item,
-                items: page[item]
-              })
+          pageNames(){
+            const { items = {} } = this.menus.find((item) => {
+              return item.id === this.selectedId;
             });
-            return arr;
+
+            return Object.keys(items);
+          },
+          items(){
+            const { items = {} } = this.menus.find((item) => {
+              return item.id === this.selectedId;
+            });
+
+            return items;
           },
           boxWidth(){
-            const len = Object.keys(this.pages).length;
+            const len = Object.keys(this.items).length;// 当前页数
             return this.itemWidth  * len;
           },
           itemWidth(){
@@ -110,13 +106,15 @@
             };
 
             return (image.width/(image.height/window.innerHeight)).toFixed(0);
-          }
+          },
         },
         methods:{
             clickHanlder(pageId, goodId){
-              const items = this.pages[pageId] || [];
+              const { items = {} } = this.menus.find((item)=>{
+                return item.id === this.selectedId;
+              }) || [];
 
-              const { limit = '' } = items.find((item)=>{
+              const { limit = '' } = items[pageId].find((item)=>{
                 return goodId === item.id
               }) || {};
               const dates = limit.split('-');
@@ -133,6 +131,7 @@
               this.$router.push({
                 path:'/good-detail',
                 query:{
+                  categoryId: this.selectedId,
                   pageId,
                   goodId
                 }
@@ -162,8 +161,11 @@
               });
             },
 
-            getBackgroundImage(item){
-              return `url(/static/img/page/${item.id}.jpg)`;
+            getBackgroundImage(pageName){
+              const { name } = this.menus.find((item)=>{
+                return item.id === this.selectedId;
+              });
+              return `url(/static/img/${name}/${pageName}.jpg)`;
             },
             selectHandler(id){
               this.selectedId = id;
@@ -171,40 +173,38 @@
               this.isVisible = false;
               this.getData(id);
             },
-            getRequest(){
+            getRequest(id){
               const arr = [];
-              const sheetNames = createSheetNames();
-              sheetNames.forEach((item) => {
-                arr.push(axios.get(`/static/json/${item}.json`))
-              });
+              if (id === this.menus[0].id){
+                const sheetNames = createSheetNames();
+                sheetNames.forEach((item) => {
+                  arr.push(axios.get(`/static/json/${item}.json`));
+                });
+              } else {
+                arr.push(axios.get(`/static/json/Korea.json`));
+              }
+
               return arr;
             },
             getData(id){
-              if (id === '1') {
-                Promise.all(this.getRequest()).then((results = [])=>{
-                  results.forEach((item) => {
-                    const { data = [] } = item;
-                    if (data.length > 0){
-                      const { id = '' } = data[0] || {};
-                      const pageId = id.split('_')[1];
-                      this.pages[pageId].splice(0, this.pages[pageId].length);
-                      this.pages[pageId].push(...data);
-                    }
-                  });
-                })
-              } else {
-                axios.get(`/static/json/Korea.json`).then((result)=>{
-                  const { data = [] } = result;
+              Promise.all(this.getRequest(id)).then((results = [])=>{
+                const items = {};
+                results.forEach((item) => {
+                  const { data = [] } = item;
                   if (data.length > 0){
                     const { id = '' } = data[0] || {};
                     const pageId = id.split('_')[1];
-                    console.log('data:', data);
-                    console.log('pageId:', pageId);
-                    this.page2[pageId].splice(0, this.page2[pageId].length);
-                    this.page2[pageId].push(...data);
+                    items[pageId] = data;
                   }
                 });
-              }
+                const index = this.menus.findIndex((item)=>{
+                  return item.id === this.selectedId;
+                });
+
+                this.$set(this.menus, index, {
+                  items
+                });
+              });
             }
         },
         mounted() {
