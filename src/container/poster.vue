@@ -25,7 +25,9 @@
           class="footer_button menu-block"
           @click="isVisible = !isVisible"></div>
         <div class="paging">{{ page }}/{{ pages.length }}</div>
-        <div class="footer_button nav-block"></div>
+        <div
+          @click="goGoods"
+          class="footer_button nav-block"></div>
       </div>
       <transition name="fade">
         <Menu
@@ -114,6 +116,11 @@
                 }
               })
             },
+            goGoods(){
+              this.$router.push({
+                path:'/goods'
+              })
+            },
             initScroll(){
               if (!this.$refs['poster']) {
                 return
@@ -132,13 +139,7 @@
                 this.page = Math.floor(scrollX / this.itemWidth) + 1;
               });
             },
-            createSheetNames(){
-              const arr  = [];
-              for(let i = 1; i <= 12; i++ ){
-                arr.push('P'+i);
-              }
-              return arr;
-            },
+
             getBackgroundImage(item){
               return `url(/static/img/page/${item.id}.jpg)`;
             },
@@ -147,6 +148,13 @@
               this.page = 1;
               this.isVisible = false;
               this.getData(id);
+            },
+            createSheetNames(){
+              const arr  = [];
+              for(let i = 1; i <= 12; i++ ){
+                arr.push('P'+i);
+              }
+              return arr;
             },
             getRequest(){
               const arr = [];

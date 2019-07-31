@@ -13,7 +13,7 @@
 <script>
   import axios from 'axios';
   export default {
-      name: "goods",
+      name: "good-detail",
       data(){
           return{
               good: {},
