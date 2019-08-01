@@ -117,12 +117,13 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 <br />
 
 9. 修正目录
-- [x] 修正目录的选中修改
+- [x] 修正目录的选中修改  
 <br />
-- 修正目录选中的目录对应的内容
-- [x] excel表格数据修改为多页
-- [x] 根据新的excel数据画瞄点
-- [x] 修改新excel对应的图片名称
+
+- 修正目录选中的目录对应的内容    
+- [x] excel表格数据修改为多页    
+- [x] 根据新的excel数据画瞄点     
+- [x] 修改新excel对应的图片名称    
 
 <br />
 
