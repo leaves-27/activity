@@ -119,13 +119,17 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 9. 修正目录
 - [x] 修正目录的选中修改
 - 修正目录选中的目录对应的内容
-- [ ] excel表格数据修改为多页
-- [ ] 根据新的excel数据画瞄点
-- [ ] 修改新excel对应的图片名称
+- [x] excel表格数据修改为多页
+- [x] 根据新的excel数据画瞄点
+- [x] 修改新excel对应的图片名称
 
 <br />
 
 10. 列表方式查看商品  
+- [x] 修正数据生成格式
+- [x] 获取生成的数据并将其格式化
+- [x] 添加点击事件等逻辑
+
 --------------------
 
 注：
