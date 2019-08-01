@@ -8,7 +8,9 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "build:json": "excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/8-1.xlsx -o ./static/json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js"
+    "json": "npm run json:create && npm run json:merge",
+    "json:create": "excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/preferential.xlsx -o ./static/temp-json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js & excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/korea.xlsx -o ./static/temp-json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js",
+    "json:merge": "node /Users/leaves/Documents/workspace3/jsonToJson/src/index.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
