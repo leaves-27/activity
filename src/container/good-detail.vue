@@ -38,7 +38,7 @@
 
           return {
             ...good,
-            imgPath: `/static/img/${name}/${pageId.toLowerCase()}/${newGoodId}.jpg`
+            imgPath: `/static/img/${name}/${pageId.toLowerCase()}/${newGoodId.replace('p', 'P')}.jpg`
           };
         }
       },

@@ -15,7 +15,7 @@
               <div
                 v-for="(subItem, subIndex) in item.items"
                 @click="goDetail(subItem.id)"
-                :class="`good-item good-item_${index + 1}-${subIndex + 1}`"></div>
+                :class="`good-item ${name}-good-item_${index + 1}-${subIndex + 1}`"></div>
             </div>
           </div>
       </div>
@@ -40,10 +40,8 @@
 </template>
 
 <script>
-    import axios from 'axios';
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
-    import { getPages, createSheetNames } from '../utils';
     // import getGoods from '../mock/getGoods';
     import getGoods from '../apis/getGoods';
     import '../style/page-1.css';
@@ -56,6 +54,10 @@
     import '../style/page-9.css';
     import '../style/page-10.css';
     import '../style/page-11.css';
+    import '../style/korea-page-1.css';
+    import '../style/korea-page-2.css';
+    import '../style/korea-page-3.css';
+    import '../style/korea-page-4.css';
 
     export default {
         name: "poster",
@@ -63,7 +65,6 @@
           Menu,
         },
         data(){
-            // const pages = getPages();
             return {
                 menus: [],
                 selectedId: '1',
@@ -73,7 +74,13 @@
             }
         },
         computed: {
-          pages(){ // { p1: [], p2: [] }
+          name(){
+            const { name = '' } = this.menus.find((item) => {
+              return item.id === this.selectedId;
+            });
+            return name;
+          },
+          pages(){
             const { items = {} } = this.menus.find((item) => {
               return item.id === this.selectedId;
             }) || {};
