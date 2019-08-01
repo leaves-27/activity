@@ -42,7 +42,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 4. 根据生成的对应json来渲染滚动页面。
 - [x] 请求数据
 - [x] 映射渲染数据字段
-- [ ] 确定哪些商品需要提示此商品活动已过期
+- [x] 确定哪些商品需要提示此商品活动已过期
 <br />
 
 5. 根据传过来的参数获取相应json文件渲染详情页面。
@@ -108,17 +108,21 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] P4
 - [x] P5
 - [x] P6
-- [ ] P7
-- [ ] P8
-- [ ] P9
-- [ ] P10
-- [ ] P11
+- [x] P7
+- [x] P8
+- [x] P9
+- [x] P10
+- [x] P11
 - [x] P12
 <br />
 
 9. 修正目录
 - [x] 修正目录的选中修改
-- [ ] 修正目录选中的目录对应的内容
+- 修正目录选中的目录对应的内容
+- [ ] excel表格数据修改为多页
+- [ ] 根据新的excel数据画瞄点
+- [ ] 修改新excel对应的图片名称
+
 <br />
 
 10. 列表方式查看商品  
