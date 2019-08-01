@@ -80,21 +80,38 @@
           console.error('error:', error);
         });
       },
-      goDetail(id){
-        const items = id.split('_') || [];
-        const categoryName = items[1];
-        const pageId = items[2];
+      goDetail(goodId){
+        const names = goodId.split('_') || [];
+        const categoryName = names[1];
+        const pageId = names[2];
         const category = this.menus.find((item) => {
           return item.name === categoryName;
         }) || {};
         const categoryId = category.id;
+        const { items = {} } = this.menus.find((item)=>{
+          return item.id === categoryId;
+        }) || [];
+        const { limit = '' } = items[pageId].find((item)=>{
+          return goodId === item.id
+        }) || {};
+        const dates = limit.split('-');
+        const date = dates[1];
+
+        if(date){
+          const timestamp = (new Date(date.replace('.','-'))).getTime();
+          const currentTimeTimestamp = new Date().getTime();
+          if (currentTimeTimestamp > timestamp) {
+            alert(`您选择的此商品活动已过期`);
+            return;
+          }
+        }
 
         this.$router.push({
           path:'/good-detail',
           query:{
             categoryId,
             pageId,
-            goodId: id
+            goodId
           }
         })
       }

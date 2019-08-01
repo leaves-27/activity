@@ -14,7 +14,7 @@
               }">
               <div
                 v-for="(subItem, subIndex) in item.items"
-                @click="clickHanlder(item.id, subItem.id)"
+                @click="goDetail(subItem.id)"
                 :class="`good-item good-item_${index + 1}-${subIndex + 1}`"></div>
             </div>
           </div>
@@ -101,11 +101,13 @@
           },
         },
         methods:{
-            clickHanlder(pageId, goodId){
+            goDetail(goodId){
+              const names = goodId.split('_') || [];
+              const pageId = names[2];
+
               const { items = {} } = this.menus.find((item)=>{
                 return item.id === this.selectedId;
               }) || [];
-
               const { limit = '' } = items[pageId].find((item)=>{
                 return goodId === item.id
               }) || {};
@@ -153,7 +155,6 @@
               });
               this.bs = bs;
             },
-
             getBackgroundImage(pageName){
               const { name } = this.menus.find((item)=>{
                 return item.id === this.selectedId;
