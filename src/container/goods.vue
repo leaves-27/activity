@@ -70,7 +70,7 @@
         const pageId = items[2];
         const goodId = id.replace(categoryName + '_', '');
 
-        return `/static/img/${categoryName}/${pageId.toLowerCase()}/${goodId}.jpg`;
+        return `/static/img/${categoryName}/${pageId.toLowerCase()}/${goodId.replace('p', 'P')}.jpg`;
       },
       getData(){
         getGoods().then((result)=>{
