@@ -1,4 +1,4 @@
-# poster_master_front
+# poster
 
 > A Vue.js project
 
