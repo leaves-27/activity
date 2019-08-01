@@ -5,16 +5,15 @@
         class="poster_main">
           <div
             :style="{ width: boxWidth + 'px' }"
-            class="container" >
+            class="container">
             <div
-              v-for="(item, index) in pageNames"
+              v-for="(item, index) in pages"
               class="goods"
               :style="{
-                backgroundImage: getBackgroundImage(item),
-              }"
-            >
+                backgroundImage: getBackgroundImage(item.id),
+              }">
               <div
-                v-for="(subItem, subIndex) in items[item]"
+                v-for="(subItem, subIndex) in item.items"
                 @click="clickHanlder(item.id, subItem.id)"
                 :class="`good-item good-item_${index + 1}-${subIndex + 1}`"></div>
             </div>
@@ -45,6 +44,8 @@
     import BScroll from 'better-scroll'
     import Menu from '../components/menu';
     import { getPages, createSheetNames } from '../utils';
+    // import getGoods from '../mock/getGoods';
+    import getGoods from '../apis/getGoods';
     import '../style/page-1.css';
     import '../style/page-2.css';
     import '../style/page-3.css';
@@ -64,39 +65,29 @@
         data(){
             // const pages = getPages();
             return {
-                menus: [{
-                  id: '1',
-                  name: 'preferential',
-                  desc: '超值特惠',
-                  items: {},
-                }, {
-                  id: '2',
-                  name: 'korea',
-                  desc: '韩国节',
-                  items: {},
-                }],
+                menus: [],
                 selectedId: '1',
                 page: 1,
                 isVisible:false,
             }
         },
         computed: {
-          pageNames(){
+          pages(){ // { p1: [], p2: [] }
             const { items = {} } = this.menus.find((item) => {
               return item.id === this.selectedId;
-            });
+            }) || {};
+            const arr = [];
 
-            return Object.keys(items);
-          },
-          items(){
-            const { items = {} } = this.menus.find((item) => {
-              return item.id === this.selectedId;
+            Object.keys(items).forEach((item)=>{
+              arr.push({
+                id: item,
+                items: items[item]
+              });
             });
-
-            return items;
+            return arr;
           },
           boxWidth(){
-            const len = Object.keys(this.items).length;// 当前页数
+            const len = Object.keys(this.pages).length;// 当前页数
             return this.itemWidth  * len;
           },
           itemWidth(){
@@ -165,53 +156,29 @@
               const { name } = this.menus.find((item)=>{
                 return item.id === this.selectedId;
               });
-              return `url(/static/img/${name}/${pageName}.jpg)`;
+              return `url(/static/img/${name}/${pageName.toLowerCase()}/${pageName.toLowerCase()}.jpg)`;
             },
             selectHandler(id){
               this.selectedId = id;
               this.page = 1;
               this.isVisible = false;
-              this.getData(id);
             },
-            getRequest(id){
-              const arr = [];
-              if (id === this.menus[0].id){
-                const sheetNames = createSheetNames();
-                sheetNames.forEach((item) => {
-                  arr.push(axios.get(`/static/json/${item}.json`));
-                });
-              } else {
-                arr.push(axios.get(`/static/json/Korea.json`));
-              }
+            getData(){
+              getGoods().then((result)=>{
+                const { data } = result;
+                this.menus.push(...data);
 
-              return arr;
-            },
-            getData(id){
-              Promise.all(this.getRequest(id)).then((results = [])=>{
-                const items = {};
-                results.forEach((item) => {
-                  const { data = [] } = item;
-                  if (data.length > 0){
-                    const { id = '' } = data[0] || {};
-                    const pageId = id.split('_')[1];
-                    items[pageId] = data;
-                  }
-                });
-                const index = this.menus.findIndex((item)=>{
-                  return item.id === this.selectedId;
-                });
+                this.initScroll();
+                const { id } = this.menus[0] || {};
+                this.selectedId = id;
 
-                this.$set(this.menus, index, {
-                  items
-                });
+              }).catch((error)=>{
+                console.error('error:', error);
               });
             }
         },
         mounted() {
-          this.initScroll();
-          const { id } = this.menus[0] || {};
-          this.selectedId = id;
-          this.getData(id);
+          this.getData();
         }
     }
 </script>

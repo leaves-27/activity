@@ -11,8 +11,7 @@
   </div>
 </template>
 <script>
-  import axios from 'axios';
-  import _ from 'lodash';
+  import getGoods from '../mock/getGoods';
 
   export default {
     name: "goods",
@@ -44,58 +43,34 @@
 
         return items;
       },
-      imgPath(){
-        return `static/img/${pageId.toLowerCase()}/${goodId}.jpg`;
-      }
     },
     methods:{
       getImagePath(id){
+        const categoryId = '';
         const pageId = id.split('_')[1];
         const goodId = id;
-        // console.log();
-        return `static/img/${pageId.toLowerCase()}/${goodId}.jpg`;
-      },
-      createSheetNames(){
-        const arr  = [];
-        for(let i = 1; i <= 12; i++ ){
-          arr.push('P'+i);
-        }
-        return arr;
-      },
-      getRequest(){
-        const arr = [];
-        const sheetNames = this.createSheetNames();
-        sheetNames.forEach((item)=>{
-          arr.push(axios.get(`/static/json/${item}.json`))
+        const { name } = this.pages.find((item)=>{
+          return item.id === categoryId;
         });
-        return arr;
+        return `static/img/${name}/${pageId.toLowerCase()}/${goodId}.jpg`;
       },
-      getData(id){
-        if (id==='1') {
-          Promise.all(this.getRequest()).then((results = [])=>{
-            const pages = [];
-            results.forEach((item) => {
-              const { data = [] } = item;
-              pages.push(...data);
-            });
-            this.pages.push(...pages);
-          })
-        } else {
-          const pages = [];
-          axios.get(`/static/json/Korea.json`).then((result)=>{
-            const pages = [];
-            results.forEach((item) => {
-              const { data = [] } = item;
-              pages.push(...data);
-            });
-            this.pages.push(...pages);
+      getData(){
+        getGoods().then((result)=>{
+          const { data = [] } = result;
+          data.forEach((item) => {
+            const { items = {} } = item;
+            Object.keys(items).forEach((subItem)=>{
+              const goods = items[subItem] || [];
+              this.pages.push(...goods);
+            })
           });
-        }
-      }
+        }).catch((error)=>{
+          console.error('error:', error);
+        });
+      },
     },
     mounted() {
-      this.getData('1');
-      this.getData('2');
+      this.getData();
     }
   }
 </script>

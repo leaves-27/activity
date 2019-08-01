@@ -11,7 +11,7 @@
     </div>
 </template>
 <script>
-  import axios from 'axios';
+  import getGoods from '../mock/getGoods';
   export default {
       name: "good-detail",
       data(){
@@ -21,17 +21,37 @@
       },
       methods:{},
       mounted() {
-        const { pageId = '', goodId = '' } = this.$route.query || {};
-        axios.get(`/static/json/${pageId}.json`).then((result) => {
-          const { data = [] } = result;
-          const good = data.find((item)=>{
+        const { pageId = '', goodId = '', categoryId = '' } = this.$route.query || {};
+        getGoods().then((result)=>{
+          const { data } = result;
+          const { items, name } = data.find((item)=>{
+            return item.id === categoryId;
+          });
+          const goods = items[pageId] || [];
+          const good = goods.find((item)=>{
             return item.id == goodId;
           }) || {};
+
           this.good = {
             ...good,
-            imgPath: `static/img/${pageId.toLowerCase()}/${goodId}.jpg`
+            imgPath: `/static/img/${name}/${pageId.toLowerCase()}/${goodId}.jpg`
           };
+
+        }).catch((error)=>{
+          console.error('error:', error);
         });
+
+        // axios.get(`/static/json//${pageId}.json`).then((result) => {
+        //   const { data = [] } = result;
+        //   const good = data.find((item)=>{
+        //     return item.id == goodId;
+        //   }) || {};
+        //
+        //   this.good = {
+        //     ...good,
+        //     imgPath: `static/img/${pageId.toLowerCase()}/${goodId}.jpg`
+        //   };
+        // });
       }
   }
 </script>
