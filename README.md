@@ -50,7 +50,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] 映射渲染数据字段         
 <br />
 
-6. 画锚点位置。
+6. 画锚点位置。   
 (1)画出所有瞄点的大概位置
 - [x] P1
 - [x] P2
@@ -65,8 +65,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] P11
 - [x] P12
 
-(2)校正商品数据和商品瞄点位置不对应的情况
-(1)根据excel表调整样式顺序
+(2)校正商品数据和商品瞄点位置不对应的情况   
+<1>根据excel表调整样式顺序
 - [x] P1
 - [x] P2
 - [x] P3
@@ -80,7 +80,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] P11
 - [x] P12
 
-(2)修正Excel表同一商品占多行引起生成数据变多的情况:
+<2>修正Excel表同一商品占多行引起生成数据变多的情况:
 即合并相同商品占的单元格
 - [x] P1
 - [x] P2
