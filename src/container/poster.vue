@@ -69,6 +69,7 @@
                 selectedId: '1',
                 page: 1,
                 isVisible:false,
+                bs: null
             }
         },
         computed: {
@@ -150,6 +151,7 @@
                 const scrollX = Math.abs(scrollDistance);
                 this.page = Math.floor(scrollX / this.itemWidth) + 1;
               });
+              this.bs = bs;
             },
 
             getBackgroundImage(pageName){
@@ -160,6 +162,7 @@
             },
             selectHandler(id){
               this.selectedId = id;
+              this.bs.refresh();
               this.page = 1;
               this.isVisible = false;
             },
