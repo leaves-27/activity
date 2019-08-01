@@ -26,7 +26,6 @@
           const { items = [], name } = this.menus.find((item)=>{
             return item.id === categoryId;
           }) || {};
-          console.log('items:', items);
           // 找出当前页
           const goods = items[pageId] || [];
 
