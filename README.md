@@ -20,7 +20,7 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-# todoList
+# todos
 1. excel文件生成对应json文件。
 - [x] 基础的excel文件到json文件功能。
 - [x] 将excel中中文字段名映射到代码中使用的字段名。
