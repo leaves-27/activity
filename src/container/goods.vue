@@ -2,25 +2,44 @@
   <div v-if="pages.length > 0" >
     <div class="good">
       <div class="good_item">
-        <img :src="getImagePath(item.id)"  v-for="item in itemsA" />
+        <img
+          v-for="item in itemsA"
+          :src="getImagePath(item.id)"
+          @click="goDetail(item.id)" />
       </div>
       <div class="good_item">
-        <img :src="getImagePath(item.id)" v-for="item in itemsB"/>
+        <img
+          v-for="item in itemsB"
+          :src="getImagePath(item.id)"
+          @click="goDetail(item.id)"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
-  import getGoods from '../mock/getGoods';
+  import getGoods from '../apis/getGoods';
 
   export default {
     name: "goods",
     data(){
       return{
-        pages: [],
+        menus: [],
       }
     },
     computed: {
+      pages(){
+        const data = this.menus;
+        const arr = [];
+        data.forEach((item) => {
+          const { items = {} } = item;
+          Object.keys(items).forEach((subItem)=>{
+            const goods = items[subItem] || [];
+            arr.push(...goods);
+          })
+        });
+        return arr;
+      },
       itemsA() {
         const items = [];
 
@@ -46,28 +65,39 @@
     },
     methods:{
       getImagePath(id){
-        const categoryId = '';
-        const pageId = id.split('_')[1];
-        const goodId = id;
-        const { name } = this.pages.find((item)=>{
-          return item.id === categoryId;
-        });
-        return `static/img/${name}/${pageId.toLowerCase()}/${goodId}.jpg`;
+        const items = id.split('_') || [];
+        const categoryName = items[1];
+        const pageId = items[2];
+        const goodId = id.replace(categoryName + '_', '');
+
+        return `/static/img/${categoryName}/${pageId.toLowerCase()}/${goodId}.jpg`;
       },
       getData(){
         getGoods().then((result)=>{
           const { data = [] } = result;
-          data.forEach((item) => {
-            const { items = {} } = item;
-            Object.keys(items).forEach((subItem)=>{
-              const goods = items[subItem] || [];
-              this.pages.push(...goods);
-            })
-          });
+          this.menus.push(...data);
         }).catch((error)=>{
           console.error('error:', error);
         });
       },
+      goDetail(id){
+        const items = id.split('_') || [];
+        const categoryName = items[1];
+        const pageId = items[2];
+        const category = this.menus.find((item) => {
+          return item.name === categoryName;
+        }) || {};
+        const categoryId = category.id;
+
+        this.$router.push({
+          path:'/good-detail',
+          query:{
+            categoryId,
+            pageId,
+            goodId: id
+          }
+        })
+      }
     },
     mounted() {
       this.getData();

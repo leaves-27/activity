@@ -11,47 +11,45 @@
     </div>
 </template>
 <script>
-  import getGoods from '../mock/getGoods';
+  import getGoods from '../apis/getGoods';
   export default {
       name: "good-detail",
       data(){
           return{
-              good: {},
+            menus: []
           }
       },
-      methods:{},
-      mounted() {
-        const { pageId = '', goodId = '', categoryId = '' } = this.$route.query || {};
-        getGoods().then((result)=>{
-          const { data } = result;
-          const { items, name } = data.find((item)=>{
+      computed: {
+        good(){
+          const { pageId = '', goodId = '', categoryId = '' } = this.$route.query || {};
+          // 找出当前分类
+          const { items = [], name } = this.menus.find((item)=>{
             return item.id === categoryId;
-          });
+          }) || {};
+          console.log('items:', items);
+          // 找出当前页
           const goods = items[pageId] || [];
+
+          // 找出当前商品
           const good = goods.find((item)=>{
             return item.id == goodId;
           }) || {};
 
-          this.good = {
-            ...good,
-            imgPath: `/static/img/${name}/${pageId.toLowerCase()}/${goodId}.jpg`
-          };
+          const newGoodId = goodId.replace(name + '_', '');
 
+          return {
+            ...good,
+            imgPath: `/static/img/${name}/${pageId.toLowerCase()}/${newGoodId}.jpg`
+          };
+        }
+      },
+      mounted() {
+        getGoods().then((result)=>{
+          const { data } = result;
+          this.menus.push(...data);
         }).catch((error)=>{
           console.error('error:', error);
         });
-
-        // axios.get(`/static/json//${pageId}.json`).then((result) => {
-        //   const { data = [] } = result;
-        //   const good = data.find((item)=>{
-        //     return item.id == goodId;
-        //   }) || {};
-        //
-        //   this.good = {
-        //     ...good,
-        //     imgPath: `static/img/${pageId.toLowerCase()}/${goodId}.jpg`
-        //   };
-        // });
       }
   }
 </script>
