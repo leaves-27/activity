@@ -57,6 +57,15 @@ export const getMenus = ()=>{
 //   window.history.pushState(state1, "title", "#");
 // }
 
+export const isWeiXin = () => {
+  var ua = window.navigator.userAgent.toLowerCase();
+  if(ua.match(/MicroMessenger/i) == 'micromessenger' || ua.match(/Windows Phone/i) == 'windows phone'){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 export const getBrowserInterfaceSize = () => {
   // pushHistory()
   var pageWidth = window.innerWidth;
@@ -73,9 +82,13 @@ export const getBrowserInterfaceSize = () => {
     }
   }
 
+  if(isWeiXin()){
+    pageHeight = pageHeight - 44;
+  }
+
   return {
-    pageWidth: pageWidth,
-    pageHeight: pageHeight
+    pageWidth,
+    pageHeight
   }
 }
 

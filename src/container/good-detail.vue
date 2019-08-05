@@ -46,9 +46,16 @@
       },
       methods: {
         back(){
-          this.$router.push({
-            path:'/',
-          })
+          const { source = '' } = this.$route.query || {};
+          if (source === 'goods') {
+            this.$router.push({
+              path:'/goods',
+            })
+          } else {
+            this.$router.push({
+              path:'/poster',
+            })
+          }
         }
       },
       mounted() {

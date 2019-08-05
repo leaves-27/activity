@@ -81,7 +81,7 @@
                 page: 1,
                 isVisible:false,
                 bs: null,
-                pageHeight,
+                pageHeight
             }
         },
         computed: {
@@ -92,9 +92,6 @@
             return name;
           },
           pages(){
-            // const { items = {} } = this.menus.find((item) => {
-            //   return item.id === this.selectedId;
-            // }) || {};
             const arr = [];
             Object.keys(this.originPages).forEach((item)=>{
               arr.push({
@@ -120,10 +117,6 @@
           goDetail(goodId){
               const names = goodId.split('_') || [];
               const pageId = names[2];
-
-              // const { items = {} } = this.menus.find((item)=>{
-              //   return item.id === this.selectedId;
-              // }) || [];
               const { limit = '' } = this.originPages[pageId].find((item)=>{
                 return goodId === item.id
               }) || {};
@@ -203,24 +196,24 @@
               WeixinJSBridge.call('hideOptionMenu');
               const { pageHeight } = getBrowserInterfaceSize();
               this.pageHeight = pageHeight;
-              this.getData();
-            },
-            isWeiXin(){
-              var ua = window.navigator.userAgent.toLowerCase();
-              if(ua.match(/MicroMessenger/i) == 'micromessenger' || ua.match(/Windows Phone/i) == 'windows phone'){
-                return true;
-              }else{
-                return false;
+              if (!this.bs){
+                this.getData();
               }
             }
         },
         mounted() {
-          if(this.isWeiXin()){
-            document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady);
-          } else {
+          // 1.全部replace, 在vue页面激活的时候重新获取数据
+          // 2.获取工具栏高度，减去工具栏高度
+          // if(this.isWeiXin()){
+          //   document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady);
+          // } else {
+          //   this.getData();
+          // }
+          if (!this.bs){
             this.getData();
           }
-        }
+        },
+
     }
 </script>
 

@@ -111,7 +111,8 @@
           query:{
             categoryId,
             pageId,
-            goodId
+            goodId,
+            source: 'goods'
           }
         })
       },
@@ -121,7 +122,7 @@
         })
       }
     },
-    mounted() {
+    created() {
       this.getData();
     }
   }
