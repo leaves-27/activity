@@ -202,15 +202,6 @@
                 console.error('error:', error);
               });
             },
-            onBridgeReady() {
-              WeixinJSBridge.call('hideToolbar');
-              WeixinJSBridge.call('hideOptionMenu');
-              const { pageHeight } = getBrowserInterfaceSize();
-              // this.pageHeight = pageHeight;
-              if (!this.bs){
-                this.getData();
-              }
-            },
             onResize(){
               const { pageHeight } = getBrowserInterfaceSize();
               this.pageHeight = pageHeight;
