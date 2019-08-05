@@ -14,29 +14,31 @@
           @click="goDetail(item.id)"
         />
       </div>
+      <div
+        @click="back"
+        class="back-home"></div>
     </div>
   </div>
 </template>
 <script>
   import getGoods from '../apis/getGoods';
+  import { getMenus} from '../utils';
 
   export default {
     name: "goods",
     data(){
       return{
-        menus: [],
+        menus: getMenus(),
+        originPages: {}
       }
     },
     computed: {
       pages(){
-        const data = this.menus;
+        // const data = this.menus;
         const arr = [];
-        data.forEach((item) => {
-          const { items = {} } = item;
-          Object.keys(items).forEach((subItem)=>{
-            const goods = items[subItem] || [];
-            arr.push(...goods);
-          })
+        Object.keys(this.originPages).forEach((subItem)=>{
+          const goods = this.originPages[subItem] || [];
+          arr.push(...goods);
         });
         return arr;
       },
@@ -74,8 +76,9 @@
       },
       getData(){
         getGoods().then((result)=>{
-          const { data = [] } = result;
-          this.menus.push(...data);
+          const { data = {} } = result;
+          this.originPages = data;
+          // this.menus.push(...data);
         }).catch((error)=>{
           console.error('error:', error);
         });
@@ -88,10 +91,7 @@
           return item.name === categoryName;
         }) || {};
         const categoryId = category.id;
-        const { items = {} } = this.menus.find((item)=>{
-          return item.id === categoryId;
-        }) || [];
-        const { limit = '' } = items[pageId].find((item)=>{
+        const { limit = '' } = this.originPages[pageId].find((item)=>{
           return goodId === item.id
         }) || {};
         const dates = limit.split('-');
@@ -113,6 +113,11 @@
             pageId,
             goodId
           }
+        })
+      },
+      back(){
+        this.$router.push({
+          path:'/',
         })
       }
     },
@@ -138,6 +143,15 @@
     font-size: 0px;
     line-height: normal;
   }
-
-
+  .back-home{
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    height: 38px;
+    width: 38px;
+    background: #515151;
+    z-index: 999999;
+    border-radius: 19px;
+    background: rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px;
+  }
 </style>

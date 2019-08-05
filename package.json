@@ -8,8 +8,8 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "json": "npm run json:create && npm run json:merge",
-    "json:create": "excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/preferential.xlsx -o ./static/temp-json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js & excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/korea.xlsx -o ./static/temp-json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js",
+    "json": "npm run json:create",
+    "json:create": "excel2json -s /Users/leaves/Documents/workspace4/2019-8-1小程序/preferential.xlsx -o ./static/json -t /Users/leaves/Documents/workspace4/2019-8-1小程序/theme.js",
     "json:merge": "node /Users/leaves/Documents/workspace3/jsonToJson/src/index.js"
   },
   "dependencies": {
@@ -19,7 +19,8 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-scroller": "^2.2.4"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

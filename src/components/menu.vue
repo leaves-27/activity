@@ -1,5 +1,5 @@
 <template>
-  <div class="mask-layer" v-show="isVisible">
+  <div class="mask-layer" v-show="isVisible" @click="$emit('menuHide', false)">
     <div class="nav-list-wrapper" :class="{ active: isVisible }">
       <p class="nav-title">目录 <span class="close" @click="$emit('menuHide', false)"></span></p>
       <div class="nav-container" ref="nav">

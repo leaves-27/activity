@@ -20,13 +20,19 @@
           </div>
       </div>
       <div class="poster_footer">
-        <div
-          class="footer_button menu-block"
-          @click="isVisible = !isVisible"></div>
-        <div class="paging">{{ page }}/{{ pages.length }}</div>
-        <div
-          @click="goGoods"
-          class="footer_button nav-block"></div>
+        <div class="footer_left">
+          <div
+            class="footer_button menu-block"
+            @click="isVisible = !isVisible"></div>
+        </div>
+        <div class="footer_middle">
+          <div class="paging">{{ page }}/{{ pages.length }}</div>
+        </div>
+        <div class="footer_right">
+          <div
+            @click="goGoods"
+            class="footer_button nav-block"></div>
+        </div>
       </div>
       <transition name="fade">
         <Menu
@@ -40,7 +46,9 @@
 </template>
 
 <script>
-    import BScroll from 'better-scroll'
+    import BScroll from 'better-scroll';
+    import VueScroller from 'vue-scroller'
+    import { getBrowserInterfaceSize, getCookie, setCookie, getMenus} from '../utils';
     import Menu from '../components/menu';
     // import getGoods from '../mock/getGoods';
     import getGoods from '../apis/getGoods';
@@ -65,12 +73,15 @@
           Menu,
         },
         data(){
+            const { pageHeight } = getBrowserInterfaceSize();
             return {
-                menus: [],
+                menus: getMenus(),
+                originPages: {},
                 selectedId: '1',
                 page: 1,
                 isVisible:false,
-                bs: null
+                bs: null,
+                pageHeight,
             }
         },
         computed: {
@@ -81,15 +92,14 @@
             return name;
           },
           pages(){
-            const { items = {} } = this.menus.find((item) => {
-              return item.id === this.selectedId;
-            }) || {};
+            // const { items = {} } = this.menus.find((item) => {
+            //   return item.id === this.selectedId;
+            // }) || {};
             const arr = [];
-
-            Object.keys(items).forEach((item)=>{
+            Object.keys(this.originPages).forEach((item)=>{
               arr.push({
                 id: item,
-                items: items[item]
+                items: this.originPages[item]
               });
             });
             return arr;
@@ -103,19 +113,18 @@
               width: 1536,
               height: 2186,
             };
-
-            return (image.width/(image.height/window.innerHeight)).toFixed(0);
+            return (image.width/(image.height/ this.pageHeight)).toFixed(0);
           },
         },
         methods:{
-            goDetail(goodId){
+          goDetail(goodId){
               const names = goodId.split('_') || [];
               const pageId = names[2];
 
-              const { items = {} } = this.menus.find((item)=>{
-                return item.id === this.selectedId;
-              }) || [];
-              const { limit = '' } = items[pageId].find((item)=>{
+              // const { items = {} } = this.menus.find((item)=>{
+              //   return item.id === this.selectedId;
+              // }) || [];
+              const { limit = '' } = this.originPages[pageId].find((item)=>{
                 return goodId === item.id
               }) || {};
               const dates = limit.split('-');
@@ -145,13 +154,12 @@
             },
             initScroll(){
               if (!this.$refs['poster']) {
-                return
+                return;
               }
               const bs = new BScroll(this.$refs['poster'],{
-                click: true,
                 scrollX: true,
                 probeType: 3,
-                useTransition: false,  // 防止iphone微信滑动卡顿
+                click: true,
                 bounce: true,
                 momentumLimitDistance: 5
               });
@@ -170,14 +178,17 @@
             },
             selectHandler(id){
               this.selectedId = id;
-              this.bs.refresh();
-              this.page = 1;
               this.isVisible = false;
+              const { startIndex } = this.menus.find((item)=>{
+                return item.id === id;
+              });
+              const x = -1 * (startIndex - 1) * this.itemWidth;
+              this.bs.scrollTo(x, 0);
             },
             getData(){
               getGoods().then((result)=>{
                 const { data } = result;
-                this.menus.push(...data);
+                this.originPages = data;
 
                 this.initScroll();
                 const { id } = this.menus[0] || {};
@@ -186,10 +197,29 @@
               }).catch((error)=>{
                 console.error('error:', error);
               });
+            },
+            onBridgeReady() {
+              WeixinJSBridge.call('hideToolbar');
+              WeixinJSBridge.call('hideOptionMenu');
+              const { pageHeight } = getBrowserInterfaceSize();
+              this.pageHeight = pageHeight;
+              this.getData();
+            },
+            isWeiXin(){
+              var ua = window.navigator.userAgent.toLowerCase();
+              if(ua.match(/MicroMessenger/i) == 'micromessenger' || ua.match(/Windows Phone/i) == 'windows phone'){
+                return true;
+              }else{
+                return false;
+              }
             }
         },
         mounted() {
-          this.getData();
+          if(this.isWeiXin()){
+            document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady);
+          } else {
+            this.getData();
+          }
         }
     }
 </script>
@@ -203,12 +233,12 @@
   }
 
   .poster_main{
-    height: 100%;width: 100%
+    width: 100%
+    height: 100%;
   }
 
   .container{
     display flex
-    width 300%
     height 100%
   }
 
@@ -224,8 +254,36 @@
     /*border: 1px solid #ff3d00;*/
     position: absolute;
   }
+  .poster_footer{
+    display: flex;
+    width: 100%;
+    height: 38px;
+    position: fixed;
+    bottom: 15px;
+    left: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+  }
+  .footer_left{
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .footer_middle{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .footer_right{
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
   .footer_button{
-    position fixed
     height 38px
     width 38px
     background #515151
@@ -233,19 +291,12 @@
     border-radius 19px
   }
   .menu-block{
-    bottom 15px
-    left 15px
     background rgba(0,0,0,.6) url("../assets/nav.svg")no-repeat center /24px 24px
   }
   .nav-block{
-    bottom 15px
-    right 15px
     background rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px
   }
   .paging{
-    position fixed
-    bottom 24px
-    left calc(50% - 26px)
     background rgba(0,0,0,.6)
     border-radius 12px
     color #ffffff

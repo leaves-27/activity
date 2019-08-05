@@ -8,27 +8,29 @@
       <div class="goods-name">{{good.name}}</div>
       <div class="goods-price">{{good.price}}</div>
       <div class="goods-limit">有效期:{{good.limit}}</div>
+      <div
+        @click="back"
+        class="back-home"></div>
     </div>
+
 </template>
 <script>
   import getGoods from '../apis/getGoods';
+  import { getMenus} from '../utils';
   export default {
       name: "good-detail",
       data(){
           return{
-            menus: []
+            menus: getMenus(),
+            pages: {}
           }
       },
       computed: {
         good(){
-          const { pageId = '', goodId = '', categoryId = '' } = this.$route.query || {};
-          // 找出当前分类
-          const { items = [], name } = this.menus.find((item)=>{
-            return item.id === categoryId;
-          }) || {};
+          const { pageId = '', goodId = '' } = this.$route.query || {};
+          const name = 'preferential';
           // 找出当前页
-          const goods = items[pageId] || [];
-
+          const goods = this.pages[pageId] || [];
           // 找出当前商品
           const good = goods.find((item)=>{
             return item.id == goodId;
@@ -42,10 +44,17 @@
           };
         }
       },
+      methods: {
+        back(){
+          this.$router.push({
+            path:'/',
+          })
+        }
+      },
       mounted() {
         getGoods().then((result)=>{
           const { data } = result;
-          this.menus.push(...data);
+          this.pages = data;
         }).catch((error)=>{
           console.error('error:', error);
         });
@@ -54,6 +63,17 @@
 </script>
 
 <style scoped lang="stylus">
+    .back-home{
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      height: 38px;
+      width: 38px;
+      background: #515151;
+      z-index: 999999;
+      border-radius: 19px;
+      background: rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px;
+    }
     .goods
         position absolute
         height 100%
