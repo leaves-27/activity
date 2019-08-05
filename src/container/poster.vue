@@ -74,6 +74,7 @@
         },
         data(){
             const { pageHeight } = getBrowserInterfaceSize();
+
             return {
                 menus: getMenus(),
                 originPages: {},
@@ -81,7 +82,9 @@
                 page: 1,
                 isVisible:false,
                 bs: null,
-                pageHeight
+                pageHeight,
+                height1: 0,
+                height2: 0
             }
         },
         computed: {
@@ -110,7 +113,15 @@
               width: 1536,
               height: 2186,
             };
+            // const image = {
+            //   width: 1241,
+            //   height: 1642,
+            // };
             return (image.width/(image.height/ this.pageHeight)).toFixed(0);
+
+            // 图片宽度不够了，容器宽度太大
+
+            // return pageWidth;
           },
         },
         methods:{
@@ -195,20 +206,18 @@
               WeixinJSBridge.call('hideToolbar');
               WeixinJSBridge.call('hideOptionMenu');
               const { pageHeight } = getBrowserInterfaceSize();
-              this.pageHeight = pageHeight;
+              // this.pageHeight = pageHeight;
               if (!this.bs){
                 this.getData();
               }
+            },
+            onResize(){
+              const { pageHeight } = getBrowserInterfaceSize();
+              this.pageHeight = pageHeight;
             }
         },
         mounted() {
-          // 1.全部replace, 在vue页面激活的时候重新获取数据
-          // 2.获取工具栏高度，减去工具栏高度
-          // if(this.isWeiXin()){
-          //   document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady);
-          // } else {
-          //   this.getData();
-          // }
+          window.onresize = this.onResize;
           if (!this.bs){
             this.getData();
           }
@@ -241,7 +250,7 @@
     position relative;
     background-repeat: no-repeat;
     background-positon: center;
-    background-size: contain;
+    background-size: 100% auto;
   }
   .good-item{
     /*border: 1px solid #ff3d00;*/

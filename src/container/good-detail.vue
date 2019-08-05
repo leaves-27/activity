@@ -53,7 +53,7 @@
             })
           } else {
             this.$router.push({
-              path:'/poster',
+              path:'/',
             })
           }
         }

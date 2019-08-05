@@ -82,9 +82,9 @@ export const getBrowserInterfaceSize = () => {
     }
   }
 
-  if(isWeiXin()){
-    pageHeight = pageHeight - 44;
-  }
+  // if(isWeiXin()){
+  //   pageHeight = pageHeight - 44;
+  // }
 
   return {
     pageWidth,
