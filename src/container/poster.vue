@@ -3,21 +3,67 @@
       <div
         ref="poster"
         class="poster_main">
+        <div
+          :style="{ width: pagesWidth + 'px' }"
+          class="container">
           <div
-            :style="{ width: boxWidth + 'px' }"
-            class="container">
+            v-for="(page, pageIndex) in pages"
+            class="page"
+            :style="{
+              backgroundImage: getBackgroundImage(page.id),
+            }">
             <div
-              v-for="(item, index) in pages"
-              class="goods"
-              :style="{
-                backgroundImage: getBackgroundImage(item.id),
+              v-for="(row, rowIndex) in page.rows"
+              class="row" :style="{
+                flexBasis: !!row.height ? row.height + 'px' : 'auto',
+                flexGrow: !!!row.height && !!row.rowspan ? row.rowspan : 1,
+                flexShrink: !!row.height ? 0 : 1
               }">
               <div
-                v-for="(subItem, subIndex) in item.items"
-                @click="goDetail(subItem.id)"
-                :class="`good-item ${name}-good-item_${index + 1}-${subIndex + 1}`"></div>
+                v-for="(column, columnIndex) in row.columns"
+                class="column"
+                :style="{
+                    flexBasis: !!column.width ? column.width + 'px' : 'auto',
+                    flexGrow: !!!column.width && !!column.colspan ? column.colspan : 1,
+                    flexShrink: !!column.width ? 0 : 1
+                }">
+                <div
+                  v-if="!!column.rows"
+                  class="table">
+                  <div
+                    v-for="(subRow, subRowIndex) in column.rows"
+                    :style="{
+                      flexBasis: !!subRow.height ? row.height + 'px' : 'auto',
+                      flexGrow: !!!subRow.height && !!row.rowspan ? row.rowspan : 1,
+                      flexShrink: !!subRow.height ? 0 : 1
+                    }"
+                    class="row">
+                    <div
+                      v-for="(subColumn, subColumnIndex) in subRow.columns"
+                      :style="{
+                        flexBasis: !!subColumn.width ? subColumn.width + 'px' : 'auto',
+                        flexGrow: !!!subColumn.width && !!subColumn.colspan ? subColumn.colspan : 1,
+                        flexShrink: !!subColumn.width ? 0 : 1
+                      }"
+                      class="column">
+                      <div
+                        class="good"
+                        @click="goDetail(subColumn.product.productId)">
+                        <img :src="subColumn.product.imageUrl" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-else
+                  class="good"
+                  @click="goDetail(column.product.id)">
+                  <img :src="column.product.imageUrl" />
+                </div>
+              </div>
             </div>
           </div>
+        </div>
       </div>
       <div class="poster_footer">
         <div class="footer_left">
@@ -47,25 +93,10 @@
 
 <script>
     import BScroll from 'better-scroll';
-    import VueScroller from 'vue-scroller'
     import { getBrowserInterfaceSize, getCookie, setCookie, getMenus} from '../utils';
     import Menu from '../components/menu';
-    // import getGoods from '../mock/getGoods';
-    import getGoods from '../apis/getGoods';
-    import '../style/page-1.css';
-    import '../style/page-2.css';
-    import '../style/page-3.css';
-    import '../style/page-4.css';
-    import '../style/page-5.css';
-    import '../style/page-7.css';
-    import '../style/page-8.css';
-    import '../style/page-9.css';
-    import '../style/page-10.css';
-    import '../style/page-11.css';
-    import '../style/korea-page-1.css';
-    import '../style/korea-page-2.css';
-    import '../style/korea-page-3.css';
-    import '../style/korea-page-4.css';
+    import getGoods from '../mock/getGoods';
+    // import getGoods from '../apis/getGoods';
 
     export default {
         name: "poster",
@@ -77,7 +108,7 @@
 
             return {
                 menus: getMenus(),
-                originPages: {},
+                originData: [],
                 selectedId: '1',
                 page: 1,
                 isVisible:false,
@@ -95,20 +126,15 @@
             return name;
           },
           pages(){
-            const arr = [];
-            Object.keys(this.originPages).forEach((item)=>{
-              arr.push({
-                id: item,
-                items: this.originPages[item]
-              });
+            const pages = [];
+            this.originData.forEach((item)=>{
+              const { pages: activityPages } = item;
+              pages.push(...activityPages);
             });
-            return arr;
+            return pages;
           },
-          boxWidth(){
-            const len = Object.keys(this.pages).length;// 当前页数
-            return this.itemWidth  * len;
-          },
-          itemWidth(){
+          pageWidth(){
+            // 根据背景图的大小计算页面宽度
             const image = {
               width: 1536,
               height: 2186,
@@ -118,30 +144,32 @@
             //   height: 1642,
             // };
             return (image.width/(image.height/ this.pageHeight)).toFixed(0);
-
             // 图片宽度不够了，容器宽度太大
-
             // return pageWidth;
+          },
+          pagesWidth(){
+            const len = this.pages.length;
+            return this.pageWidth  * len;
           },
         },
         methods:{
           goDetail(goodId){
-              const names = goodId.split('_') || [];
-              const pageId = names[2];
-              const { limit = '' } = this.originPages[pageId].find((item)=>{
-                return goodId === item.id
-              }) || {};
-              const dates = limit.split('-');
-              const date = dates[1];
-
-              if(date){
-                const timestamp = (new Date(date.replace('.','-'))).getTime();
-                const currentTimeTimestamp = new Date().getTime();
-                if (currentTimeTimestamp > timestamp) {
-                  alert(`您选择的此商品活动已过期`);
-                  return;
-                }
-              }
+              // const names = goodId.split('_') || [];
+              // const pageId = names[2];
+              // const { limit = '' } = this.originPages[pageId].find((item)=>{
+              //   return goodId === item.id
+              // }) || {};
+              // const dates = limit.split('-');
+              // const date = dates[1];
+              //
+              // if(date){
+              //   const timestamp = (new Date(date.replace('.','-'))).getTime();
+              //   const currentTimeTimestamp = new Date().getTime();
+              //   if (currentTimeTimestamp > timestamp) {
+              //     alert(`您选择的此商品活动已过期`);
+              //     return;
+              //   }
+              // }
               this.$router.push({
                 path:'/good-detail',
                 query:{
@@ -170,15 +198,17 @@
               bs.on('scroll', (pos) => {
                 const { x: scrollDistance } = pos;
                 const scrollX = Math.abs(scrollDistance);
-                this.page = Math.floor(scrollX / this.itemWidth) + 1;
+                this.page = Math.floor(scrollX / this.pageWidth) + 1;
               });
               this.bs = bs;
             },
             getBackgroundImage(pageName){
-              const { name } = this.menus.find((item)=>{
-                return item.id === this.selectedId;
-              });
-              return `url(/static/img/${name}/${pageName.toLowerCase()}/${pageName.toLowerCase()}.jpg)`;
+              // const { name } = this.menus.find((item)=>{
+              //   return item.id === this.selectedId;
+              // });
+              // return `url(/static/img/${name}/${pageName.toLowerCase()}/${pageName.toLowerCase()}.jpg)`;
+
+              return '';
             },
             selectHandler(id){
               this.selectedId = id;
@@ -186,18 +216,21 @@
               const { startIndex } = this.menus.find((item)=>{
                 return item.id === id;
               });
-              const x = -1 * (startIndex - 1) * this.itemWidth;
+              const x = -1 * (startIndex - 1) * this.pageWidth;
               this.bs.scrollTo(x, 0);
             },
             getData(){
-              getGoods().then((result)=>{
-                const { data } = result;
-                this.originPages = data;
+              getGoods().then(({ data: result = {} })=>{
+                console.log('result:', result);
+                const { data = {}, success } = result;
+                if (success){
+                  const { actDetailList = []} = data;
+                  this.originData = actDetailList;
 
-                this.initScroll();
-                const { id } = this.menus[0] || {};
-                this.selectedId = id;
-
+                  this.initScroll();
+                  const { id } = this.menus[0] || {};
+                  this.selectedId = id;
+                }
               }).catch((error)=>{
                 console.error('error:', error);
               });
@@ -219,34 +252,52 @@
 
 <style scoped lang="stylus">
   .poster{
-    position absolute
-    width 100%
-    height 100%
-    overflow hidden
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .poster_main{
-    width: 100%
+    width: 100%;
     height: 100%;
   }
 
   .container{
-    display flex
-    height 100%
+    display: flex;
+    height: 100%;
   }
 
-  .goods{
-    flex 1
-    height 100%
-    position relative;
+  .page{
+    flex: 1;
+    height: 100%;
+    position: relative;
     background-repeat: no-repeat;
     background-positon: center;
     background-size: 100% auto;
+    display: flex;
+    flex-direction: column;
   }
-  .good-item{
-    /*border: 1px solid #ff3d00;*/
-    position: absolute;
+
+  .row{
+    display: flex;
+    flex: 1;
+    justify-content:center;
+    align-items:center;
+    overflow: hidden;
   }
+  .column{
+    overflow: hidden;
+  }
+  .good{
+    width: 100%;
+    font-size: 0;
+    text-align: center;
+  }
+  .good img{
+    max-width: 100%;
+  }
+
   .poster_footer{
     display: flex;
     width: 100%;
