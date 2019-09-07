@@ -114,3 +114,23 @@ export const getCookie = (c_name) => {
   }
   return "";
 }
+
+
+export const goDetail = function(good = {}, source = ''){
+  const { endTime = '', productId } = good;
+  if(endTime){
+    const timestamp = (new Date(endTime)).getTime();
+    const currentTimeTimestamp = new Date().getTime();
+    if (currentTimeTimestamp > timestamp) {
+      alert(`您选择的此商品活动已过期`);
+      return;
+    }
+  }
+  this.$router.push({
+    path:'/good-detail',
+    query:{
+      id: productId,
+      source
+    }
+  })
+};

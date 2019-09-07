@@ -10,7 +10,7 @@
             v-for="(page, pageIndex) in pages"
             class="page"
             :style="{
-              backgroundImage: getBackgroundImage(page.id),
+              backgroundImage: getBackgroundImage(page.backgroundImageUrl),
             }">
             <div
               v-for="(row, rowIndex) in page.rows"
@@ -57,7 +57,7 @@
                 <div
                   v-else
                   class="good"
-                  @click="goDetail(column.product.id)">
+                  @click="goDetail(column.product)">
                   <img :src="column.product.imageUrl" />
                 </div>
               </div>
@@ -93,7 +93,7 @@
 
 <script>
     import BScroll from 'better-scroll';
-    import { getBrowserInterfaceSize, getCookie, setCookie, getMenus} from '../utils';
+    import { getBrowserInterfaceSize, getCookie, setCookie, getMenus, goDetail} from '../utils';
     import Menu from '../components/menu';
     import getGoods from '../mock/getGoods';
     // import getGoods from '../apis/getGoods';
@@ -107,7 +107,6 @@
             const { pageHeight } = getBrowserInterfaceSize();
 
             return {
-                menus: getMenus(),
                 originData: [],
                 selectedId: '1',
                 page: 1,
@@ -119,11 +118,20 @@
             }
         },
         computed: {
-          name(){
-            const { name = '' } = this.menus.find((item) => {
-              return item.id === this.selectedId;
+          menus(){
+            const menus = [];
+            this.originData.forEach((item, index)=>{
+              const { actId, actName } = item;
+              const startIndex = this.pages.findIndex((page)=>{
+                return page.actId * 1 === actId * 1;
+              });
+              menus.push({
+                id: actId,
+                desc: actName,
+                startIndex: startIndex === -1 ? 0 : startIndex,
+              });
             });
-            return name;
+            return menus;
           },
           pages(){
             const pages = [];
@@ -153,92 +161,64 @@
           },
         },
         methods:{
-          goDetail(goodId){
-              // const names = goodId.split('_') || [];
-              // const pageId = names[2];
-              // const { limit = '' } = this.originPages[pageId].find((item)=>{
-              //   return goodId === item.id
-              // }) || {};
-              // const dates = limit.split('-');
-              // const date = dates[1];
-              //
-              // if(date){
-              //   const timestamp = (new Date(date.replace('.','-'))).getTime();
-              //   const currentTimeTimestamp = new Date().getTime();
-              //   if (currentTimeTimestamp > timestamp) {
-              //     alert(`您选择的此商品活动已过期`);
-              //     return;
-              //   }
-              // }
-              this.$router.push({
-                path:'/good-detail',
-                query:{
-                  categoryId: this.selectedId,
-                  pageId,
-                  goodId
-                }
-              })
-            },
-            goGoods(){
-              this.$router.push({
-                path:'/goods'
-              })
-            },
-            initScroll(){
-              if (!this.$refs['poster']) {
-                return;
-              }
-              const bs = new BScroll(this.$refs['poster'],{
-                scrollX: true,
-                probeType: 3,
-                click: true,
-                bounce: true,
-                momentumLimitDistance: 5
-              });
-              bs.on('scroll', (pos) => {
-                const { x: scrollDistance } = pos;
-                const scrollX = Math.abs(scrollDistance);
-                this.page = Math.floor(scrollX / this.pageWidth) + 1;
-              });
-              this.bs = bs;
-            },
-            getBackgroundImage(pageName){
-              // const { name } = this.menus.find((item)=>{
-              //   return item.id === this.selectedId;
-              // });
-              // return `url(/static/img/${name}/${pageName.toLowerCase()}/${pageName.toLowerCase()}.jpg)`;
-
-              return '';
-            },
-            selectHandler(id){
-              this.selectedId = id;
-              this.isVisible = false;
-              const { startIndex } = this.menus.find((item)=>{
-                return item.id === id;
-              });
-              const x = -1 * (startIndex - 1) * this.pageWidth;
-              this.bs.scrollTo(x, 0);
-            },
-            getData(){
-              getGoods().then(({ data: result = {} })=>{
-                console.log('result:', result);
-                const { data = {}, success } = result;
-                if (success){
-                  const { actDetailList = []} = data;
-                  this.originData = actDetailList;
-
-                  this.initScroll();
-                  const { id } = this.menus[0] || {};
-                  this.selectedId = id;
-                }
-              }).catch((error)=>{
-                console.error('error:', error);
-              });
-            },
-            onResize(){
-              const { pageHeight } = getBrowserInterfaceSize();
-              this.pageHeight = pageHeight;
+          goDetail(good = {}){
+            goDetail.bind(this)(good);
+          },
+          goGoods(){
+            this.$router.push({
+              path:'/goods'
+            })
+          },
+          initScroll(){
+            if (!this.$refs['poster']) {
+              return;
             }
+            const bs = new BScroll(this.$refs['poster'],{
+              scrollX: true,
+              probeType: 3,
+              click: true,
+              bounce: true,
+              momentumLimitDistance: 5
+            });
+            bs.on('scroll', (pos) => {
+              const { x: scrollDistance } = pos;
+              const scrollX = Math.abs(scrollDistance);
+              this.page = Math.floor(scrollX / this.pageWidth) + 1;
+            });
+            this.bs = bs;
+          },
+          getBackgroundImage(pageName){
+            return '';
+          },
+          selectHandler(id){
+            this.selectedId = id;
+            this.isVisible = false;
+            const { startIndex } = this.menus.find((item)=>{
+              return item.id === id;
+            });
+
+            const x = -1 * startIndex * this.pageWidth;
+            this.bs.scrollTo(x, 0);
+          },
+          getData(){
+            getGoods().then(({ data: result = {} })=>{
+              const { data = {}, success } = result;
+              if (success){
+                const { actDetailList = []} = data;
+                this.originData = actDetailList;
+
+                this.initScroll();
+                const { id } = this.menus[0] || {};
+                this.selectedId = id;
+              }
+            }).catch((error)=>{
+              console.error('error:', error);
+            });
+          },
+          onResize(){
+            const { pageHeight } = getBrowserInterfaceSize();
+            this.pageHeight = pageHeight;
+          }
         },
         mounted() {
           window.onresize = this.onResize;
@@ -246,7 +226,6 @@
             this.getData();
           }
         },
-
     }
 </script>
 

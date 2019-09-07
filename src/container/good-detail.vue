@@ -1,13 +1,13 @@
 <template>
-    <div class="goods">
+    <div class="goods" v-if="good">
       <div class="pic-wrapper">
           <img
               style="width: 100%"
-              :src="good.imgPath" alt="">
+              :src="good.imageUrl" alt="" />
       </div>
-      <div class="goods-name">{{good.name}}</div>
-      <div class="goods-price">{{good.price}}</div>
-      <div class="goods-limit">有效期:{{good.limit}}</div>
+      <div class="goods-name">{{ good.productName }}</div>
+      <div class="goods-price">{{ good.price }}</div>
+      <div class="goods-limit">有效期:{{ good.endTime }}</div>
       <div
         @click="back"
         class="back-home"></div>
@@ -15,34 +15,13 @@
 
 </template>
 <script>
-  import getGoods from '../apis/getGoods';
-  import { getMenus} from '../utils';
+  import getGoodDetail from '../apis/getGoodDetail';
   export default {
       name: "good-detail",
       data(){
           return{
-            menus: getMenus(),
-            pages: {}
+            good: null
           }
-      },
-      computed: {
-        good(){
-          const { pageId = '', goodId = '' } = this.$route.query || {};
-          const name = 'preferential';
-          // 找出当前页
-          const goods = this.pages[pageId] || [];
-          // 找出当前商品
-          const good = goods.find((item)=>{
-            return item.id == goodId;
-          }) || {};
-
-          const newGoodId = goodId.replace(name + '_', '');
-
-          return {
-            ...good,
-            imgPath: `/static/img/${name}/${pageId.toLowerCase()}/${newGoodId.replace('p', 'P')}.jpg`
-          };
-        }
       },
       methods: {
         back(){
@@ -59,9 +38,12 @@
         }
       },
       mounted() {
-        getGoods().then((result)=>{
-          const { data } = result;
-          this.pages = data;
+        const { id } = this.$route.query || {};
+        getGoodDetail(id).then(({ data: result })=>{
+          const { data = {}, success } = result;
+          if (success){
+            this.good = data;
+          }
         }).catch((error)=>{
           console.error('error:', error);
         });

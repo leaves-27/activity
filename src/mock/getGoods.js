@@ -8,6 +8,7 @@ export default ()=>{
               "actDesc":"活动组1-活动2-描述",
               "actId":2,
               "actName":"活动组1-活动2",
+              "backgroundImageUrl": '',
               "pages":[
                 {
                   "actId":"2",
