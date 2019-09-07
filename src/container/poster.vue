@@ -8,10 +8,7 @@
           class="container">
           <div
             v-for="(page, pageIndex) in pages"
-            class="page"
-            :style="{
-              backgroundImage: getBackgroundImage(page.backgroundImageUrl),
-            }">
+            class="page">
             <div
               v-for="(row, rowIndex) in page.rows"
               class="row" :style="{
@@ -47,18 +44,51 @@
                       }"
                       class="column">
                       <div
-                        class="good"
-                        @click="goDetail(subColumn.product.productId)">
-                        <img :src="subColumn.product.imageUrl" />
+                        v-if="!!subColumn.rows"
+                        class="table">
+                        <div
+                          v-for="(subSubRow, subRowIndex) in subColumn.rows"
+                          :style="{
+                            flexBasis: !!subSubRow.height ? subSubRow.height + 'px' : 'auto',
+                            flexGrow: !!!subSubRow.height && !!subSubRow.rowspan ? subSubRow.rowspan : 1,
+                            flexShrink: !!subSubRow.height ? 0 : 1
+                          }"
+                          class="row">
+                          <div
+                            v-for="(subSubColumn, subColumnIndex) in subSubRow.columns"
+                            :style="{
+                              flexBasis: !!subSubColumn.width ? subSubColumn.width + 'px' : 'auto',
+                              flexGrow: !!!subSubColumn.width && !!subSubColumn.colspan ? subSubColumn.colspan : 1,
+                              flexShrink: !!subSubColumn.width ? 0 : 1
+                            }"
+                            class="column">
+                            <div
+                              v-if="subSubColumn.product"
+                              class="good"
+                              @click="goDetail(subSubColumn.product.productId)">
+                              <img :src="subSubColumn.product.imageUrl" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-else>
+                        <div
+                          v-if="subColumn.product"
+                          class="good"
+                          @click="goDetail(subColumn.product.productId)">
+                          <img :src="subColumn.product.imageUrl" />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  v-else
-                  class="good"
-                  @click="goDetail(column.product)">
-                  <img :src="column.product.imageUrl" />
+                <div v-else>
+                  <div
+                    v-if="column.product"
+                    class="good"
+                    @click="goDetail(column.product)">
+                    <img :src="column.product.imageUrl" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -95,8 +125,8 @@
     import BScroll from 'better-scroll';
     import { getBrowserInterfaceSize, getCookie, setCookie, getMenus, goDetail} from '../utils';
     import Menu from '../components/menu';
-    import getGoods from '../mock/getGoods';
-    // import getGoods from '../apis/getGoods';
+    // import getGoods from '../mock/getGoods';
+    import getGoods from '../apis/getGoods';
 
     export default {
         name: "poster",
@@ -105,7 +135,6 @@
         },
         data(){
             const { pageHeight } = getBrowserInterfaceSize();
-
             return {
                 originData: [],
                 selectedId: '1',
@@ -115,7 +144,7 @@
                 pageHeight,
                 height1: 0,
                 height2: 0
-            }
+            };
         },
         computed: {
           menus(){

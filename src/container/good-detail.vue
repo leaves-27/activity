@@ -38,6 +38,7 @@
         }
       },
       mounted() {
+        console.log('================test:');
         const { id } = this.$route.query || {};
         getGoodDetail(id).then(({ data: result })=>{
           const { data = {}, success } = result;
