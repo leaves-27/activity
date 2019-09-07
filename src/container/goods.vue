@@ -3,7 +3,9 @@
     <vueWaterfallEasy
       ref="waterfall"
       :imgsArr="goods"
-      @scrollReachBottom="getData">
+      :enablePullDownEvent="true"
+      @scrollReachBottom="getData"
+    >
       <div class="frame" slot-scope="props">
         <img
           :src="props.value.imageUrl"
@@ -31,20 +33,31 @@
       return{
         goods: [],
         page: 1,
+        pullDownDistance: 0
       }
     },
     methods:{
       getData(){
-        getGoods(this.page).then(({ data: result = {} })=>{
+        getGoods(this.page, 20).then(({ data: result = {} })=>{
           const { data = {}, success } = result;
           if (success){
-            const { productList = [] } = data;
+            const { productList = [], } = data;
             this.goods = this.goods.concat(productList);
             this.page++;
           }
         }).catch((error)=>{
           console.error('error:', error);
         });
+      },
+      pullDownMove(pullDownDistance) {
+        this.pullDownDistance = pullDownDistance
+      },
+      pullDownEnd(pullDownDistance) {
+        console.log('pullDownEnd');
+        if(this.pullDownDistance > 50){
+          alert('下拉刷新')
+        }
+        this.pullDownDistance = 0
       },
       goDetail(good){
         goDetail.bind(this)(good, 'goods');
