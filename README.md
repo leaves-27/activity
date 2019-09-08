@@ -133,8 +133,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - [x] 添加点击事件等逻辑
 
 11.issue
-- [ ] 从路由取id
-- [ ] 第首页跳到第二个页面时，第二个页面首次请求不执行
+- [x] 从路由取id
+- [x] 第首页跳到第二个页面时，第二个页面首次请求不执行
 
 --------------------
 
