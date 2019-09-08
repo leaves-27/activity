@@ -1,11 +1,11 @@
 <template>
   <div class="goods">
     <vueWaterfallEasy
+      v-if="goods.length > 0"
       ref="waterfall"
       :imgsArr="goods"
       :enablePullDownEvent="true"
-      @scrollReachBottom="getData"
-    >
+      @scrollReachBottom="getData">
       <div class="frame" slot-scope="props">
         <img
           :src="props.value.imageUrl"
@@ -14,6 +14,10 @@
         />
       </div>
     </vueWaterfallEasy>
+    <div
+      v-else
+      class="empty"
+    > 暂无活动商品 </div>
     <div
       @click="back"
       class="back-home"></div>
@@ -97,5 +101,11 @@
     z-index: 999999;
     border-radius: 19px;
     background: rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px;
+  }
+  .empty{
+    padding-top: 100px;
+    text-align: center;
+    font-size: 16px;
+    color: #999;
   }
 </style>

@@ -130,7 +130,8 @@ export const goDetail = function(good = {}, source = '', actId){
     path:'/good-detail',
     query:{
       id: productId,
-      source
+      source,
+      actId,
     }
   })
 };

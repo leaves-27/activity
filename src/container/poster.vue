@@ -4,6 +4,7 @@
         ref="poster"
         class="poster_main">
         <div
+          v-if="pages.length > 0"
           :style="{ width: pagesWidth + 'px' }"
           class="container">
           <div
@@ -94,6 +95,10 @@
             </div>
           </div>
         </div>
+        <div
+          v-else
+          class="empty"
+        > 暂无活动商品 </div>
       </div>
       <div class="poster_footer">
         <div class="footer_left">
@@ -191,15 +196,16 @@
         },
         methods:{
           getActId(){
-            const { actId } = this.$route.query;
-            if (actId){
-              return actId;
+            const { groupId = '' } = this.$route.query;
+            if (groupId){
+              return groupId;
             } else {
-              return localStorage.get('actId');
+              return localStorage.getItem('actId') || '';
             }
           },
           goDetail(good = {}){
             const actId = this.getActId();
+
             goDetail.bind(this)(good, '', actId);
           },
           goGoods(){
@@ -247,9 +253,11 @@
             getGoods(actId).then(({ data: result = {} })=>{
               const { data = {}, success } = result;
               if (success){
-                const { actDetailList = [], actId } = data;
+                const { actDetailList = [], groupId } = data;
                 this.originData = actDetailList;
-                localStorage.set('actId', actId);
+                if (!!groupId){
+                  localStorage.setItem('actId', groupId);
+                }
                 this.initScroll();
                 const { id } = this.menus[0] || {};
                 this.selectedId = id;
@@ -376,5 +384,11 @@
     font-size: 12px;
     line-height: 24px;
     z-index: 100000;
+  }
+  .empty{
+    padding-top: 100px;
+    text-align: center;
+    font-size: 16px;
+    color: #999;
   }
 </style>
