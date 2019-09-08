@@ -200,20 +200,20 @@
             if (groupId){
               return groupId;
             } else {
-              return localStorage.getItem('actId') || '';
+              return localStorage.getItem('groupId') || '';
             }
           },
           goDetail(good = {}){
-            const actId = this.getActId();
+            const groupId = this.getActId();
 
-            goDetail.bind(this)(good, '', actId);
+            goDetail.bind(this)(good, '', groupId);
           },
           goGoods(){
-            const actId = this.getActId();
+            const groupId = this.getActId();
             this.$router.push({
               path:'/goods',
               query: {
-                actId,
+                groupId,
               }
             })
           },
@@ -249,14 +249,14 @@
             this.bs.scrollTo(x, 0);
           },
           getData(){
-            const actId = this.getActId();
-            getGoods(actId).then(({ data: result = {} })=>{
+            const groupId = this.getActId();
+            getGoods(groupId).then(({ data: result = {} })=>{
               const { data = {}, success } = result;
               if (success){
                 const { actDetailList = [], groupId } = data;
                 this.originData = actDetailList;
                 if (!!groupId){
-                  localStorage.setItem('actId', groupId);
+                  localStorage.setItem('groupId', groupId);
                 }
                 this.initScroll();
                 const { id } = this.menus[0] || {};

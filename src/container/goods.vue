@@ -41,8 +41,8 @@
       }
     },
     methods:{
-      getData(actId){
-        getGoods(this.page, 20, actId).then(({ data: result = {} })=>{
+      getData(groupId){
+        getGoods(this.page, 20, groupId).then(({ data: result = {} })=>{
           const { data = {}, success } = result;
           if (success){
             const { productList = [], } = data;
@@ -64,8 +64,8 @@
         this.pullDownDistance = 0
       },
       goDetail(good){
-        const { actId } = this.$route.query;
-        goDetail.bind(this)(good, 'goods', actId);
+        const { groupId } = this.$route.query;
+        goDetail.bind(this)(good, 'goods', groupId);
       },
       back(){
         this.$router.push({
@@ -74,8 +74,8 @@
       }
     },
     created() {
-      const { actId } = this.$route.query;
-      this.getData(actId);
+      const { groupId } = this.$route.query;
+      this.getData(groupId);
     }
   }
 </script>

@@ -38,8 +38,8 @@
         }
       },
       mounted() {
-        const { id, actId } = this.$route.query || {};
-        getGoodDetail(id, actId).then(({ data: result })=>{
+        const { id, groupId } = this.$route.query || {};
+        getGoodDetail(id, groupId).then(({ data: result })=>{
           const { data = {}, success } = result;
           if (success){
             this.good = data;
