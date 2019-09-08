@@ -190,12 +190,25 @@
           },
         },
         methods:{
+          getActId(){
+            const { actId } = this.$route.query;
+            if (actId){
+              return actId;
+            } else {
+              return localStorage.get('actId');
+            }
+          },
           goDetail(good = {}){
-            goDetail.bind(this)(good);
+            const actId = this.getActId();
+            goDetail.bind(this)(good, '', actId);
           },
           goGoods(){
+            const actId = this.getActId();
             this.$router.push({
-              path:'/goods'
+              path:'/goods',
+              query: {
+                actId,
+              }
             })
           },
           initScroll(){
@@ -230,12 +243,13 @@
             this.bs.scrollTo(x, 0);
           },
           getData(){
-            getGoods().then(({ data: result = {} })=>{
+            const actId = this.getActId();
+            getGoods(actId).then(({ data: result = {} })=>{
               const { data = {}, success } = result;
               if (success){
-                const { actDetailList = []} = data;
+                const { actDetailList = [], actId } = data;
                 this.originData = actDetailList;
-
+                localStorage.set('actId', actId);
                 this.initScroll();
                 const { id } = this.menus[0] || {};
                 this.selectedId = id;
@@ -258,7 +272,7 @@
     }
 </script>
 
-<style scoped lang="stylus">
+<style scoped>
   .poster{
     position: absolute;
     width: 100%;
@@ -289,21 +303,25 @@
 
   .row{
     display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex: 1;
-    justify-content:center;
-    align-items:center;
     overflow: hidden;
+    border: none;
+    font-size: 0;
   }
   .column{
     overflow: hidden;
   }
   .good{
     width: 100%;
-    font-size: 0;
+    font-size: 0px;
     text-align: center;
   }
   .good img{
     max-width: 100%;
+    border: none;
+    display: block;
   }
 
   .poster_footer{
@@ -336,27 +354,27 @@
     align-items: center;
   }
   .footer_button{
-    height 38px
-    width 38px
-    background #515151
-    z-index 999999
-    border-radius 19px
+    height: 38px;
+    width: 38px;
+    background: #515151;
+    z-index: 999999;
+    border-radius: 19px;
   }
   .menu-block{
-    background rgba(0,0,0,.6) url("../assets/nav.svg")no-repeat center /24px 24px
+    background: rgba(0,0,0,.6) url("../assets/nav.svg")no-repeat center /24px 24px;
   }
   .nav-block{
-    background rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px
+    background: rgba(0,0,0,.6) url("../assets/menu.svg")no-repeat center /24px 24px;
   }
   .paging{
-    background rgba(0,0,0,.6)
-    border-radius 12px
-    color #ffffff
-    text-align center
-    height 24px
-    width 52px
-    font-size 12px
-    line-height 24px
-    z-index 100000
+    background: rgba(0,0,0,.6);
+    border-radius: 12px;
+    color: #ffffff;
+    text-align: center;
+    height: 24px;
+    width: 52px;
+    font-size: 12px;
+    line-height: 24px;
+    z-index: 100000;
   }
 </style>

@@ -38,9 +38,8 @@
         }
       },
       mounted() {
-        console.log('================test:');
-        const { id } = this.$route.query || {};
-        getGoodDetail(id).then(({ data: result })=>{
+        const { id, actId } = this.$route.query || {};
+        getGoodDetail(id, actId).then(({ data: result })=>{
           const { data = {}, success } = result;
           if (success){
             this.good = data;

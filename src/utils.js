@@ -116,7 +116,7 @@ export const getCookie = (c_name) => {
 }
 
 
-export const goDetail = function(good = {}, source = ''){
+export const goDetail = function(good = {}, source = '', actId){
   const { endTime = '', productId } = good;
   if(endTime){
     const timestamp = (new Date(endTime)).getTime();

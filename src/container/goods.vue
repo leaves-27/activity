@@ -37,8 +37,8 @@
       }
     },
     methods:{
-      getData(){
-        getGoods(this.page, 20).then(({ data: result = {} })=>{
+      getData(actId){
+        getGoods(this.page, 20, actId).then(({ data: result = {} })=>{
           const { data = {}, success } = result;
           if (success){
             const { productList = [], } = data;
@@ -60,7 +60,8 @@
         this.pullDownDistance = 0
       },
       goDetail(good){
-        goDetail.bind(this)(good, 'goods');
+        const { actId } = this.$route.query;
+        goDetail.bind(this)(good, 'goods', actId);
       },
       back(){
         this.$router.push({
@@ -69,7 +70,8 @@
       }
     },
     created() {
-      this.getData();
+      const { actId } = this.$route.query;
+      this.getData(actId);
     }
   }
 </script>
