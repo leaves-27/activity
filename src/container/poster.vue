@@ -148,7 +148,8 @@
                 bs: null,
                 pageHeight,
                 height1: 0,
-                height2: 0
+                height2: 0,
+                groupId: ''
             };
         },
         computed: {
@@ -200,7 +201,7 @@
             if (groupId){
               return groupId;
             } else {
-              return localStorage.getItem('groupId') || '';
+              return this.groupId;
             }
           },
           goDetail(good = {}){
@@ -256,7 +257,7 @@
                 const { actDetailList = [], groupId } = data;
                 this.originData = actDetailList;
                 if (!!groupId){
-                  localStorage.setItem('groupId', groupId);
+                  this.groupId = groupId;
                 }
                 this.initScroll();
                 const { id } = this.menus[0] || {};
