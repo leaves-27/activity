@@ -66,7 +66,7 @@
                             <div
                               v-if="subSubColumn.product"
                               class="good"
-                              @click="goDetail(subSubColumn.product.productId)">
+                              @click="goDetail(subSubColumn.product)">
                               <img :src="subSubColumn.product.imageUrl" />
                             </div>
                           </div>
@@ -76,7 +76,7 @@
                         <div
                           v-if="subColumn.product"
                           class="good"
-                          @click="goDetail(subColumn.product.productId)">
+                          @click="goDetail(subColumn.product)">
                           <img :src="subColumn.product.imageUrl" />
                         </div>
                       </div>
@@ -206,6 +206,10 @@
           },
           goDetail(good = {}){
             const groupId = this.getActId();
+            const { isClick = false } = good;
+            if (!isClick){
+              return;
+            }
 
             goDetail.bind(this)(good, '', groupId);
           },

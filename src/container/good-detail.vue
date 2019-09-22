@@ -1,13 +1,15 @@
 <template>
     <div class="goods" v-if="good">
-      <div class="pic-wrapper">
-          <img
-              style="width: 100%"
-              :src="good.imageUrl" alt="" />
+      <div
+        :style="{ backgroundImage: 'url(' + good.imageUrl + ')' }"
+        class="pic-wrapper"></div>
+      <div class="good-detail">
+        <div class="goods-name">{{ good.productName }}</div>
+        <div class="goods-price">{{ good.price }}</div>
+        <div class="price-desc">{{ good.priceDesc || 100 }}</div>
+        <div class="goods-limit">有效期:{{ good.endTime }}</div>
       </div>
-      <div class="goods-name">{{ good.productName }}</div>
-      <div class="goods-price">{{ good.price }}</div>
-      <div class="goods-limit">有效期:{{ good.endTime }}</div>
+
       <div
         @click="back"
         class="back-home"></div>
@@ -69,8 +71,14 @@
         width 100%
         background #f2f2f2
         .pic-wrapper
-            background #ffffff
-            padding-bottom 20px
+            text-align center
+            overflow hidden
+            height 230px
+            background-color #ffffff
+            background-repeat no-repeat
+            background-position center center
+            background-size auto 100%
+
         .goods-name
             background #ffffff
             line-height 22px
@@ -86,8 +94,17 @@
             font-size 16px
             color #ff3d00
             font-weight 600
-            border-bottom 1px dashed #7e8c8d
+
+        .price-desc
+          background #ffffff
+          line-height 22px
+          padding-left 12px
+          text-align left
+          color #000000
+          font-size 14px
+
         .goods-limit
+            border-top 1px dashed #7e8c8d
             height 34px
             line-height 34px
             font-size 14px
@@ -97,4 +114,8 @@
             padding-left 12px
             color #7e8c8d
 
+    .good-detail
+        padding-top 15px
+        padding-bottom 5px
+        background-color #ffffff
 </style>
