@@ -98,7 +98,7 @@
             background-color #ffffff
             background-repeat no-repeat
             background-position center center
-            background-size 100% auto
+            background-size auto 100%
 
         .goods-name
             background #ffffff
@@ -107,7 +107,7 @@
             text-align left
             color #000000
             font-size 14px
-        .
+        .goods-price
             background #ffffff
             text-align left
             padding-left 12px
