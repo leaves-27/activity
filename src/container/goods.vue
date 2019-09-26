@@ -5,19 +5,15 @@
       ref="waterfall"
       :imgsArr="goods"
       :enablePullDownEvent="true"
-      @scrollReachBottom="getData">
-      <div class="frame" slot-scope="props">
-        <img
-          :src="props.value.imageUrl"
-          @click="goDetail(props.value)"
-          class="img"
-        />
-      </div>
+      srcKey="imageUrl"
+      @click="goDetail"
+      @scrollReachBottom="pullUp"
+      @pullDownEnd="pullDownEnd">
     </vueWaterfallEasy>
     <div
       v-else
       class="empty"
-    > 暂无活动商品 </div>
+    > 暂无活动商品</div>
     <div
       @click="back"
       class="back-home"></div>
@@ -41,31 +37,36 @@
       }
     },
     methods:{
-      getData(groupId){
-        getGoods(this.page, 20, groupId).then(({ data: result = {} })=>{
+      getData(){
+        const { groupId } = this.$route.query;
+        getGoods({
+          pageSize: 10,
+          currentPageNo: this.page,
+          groupId
+        }).then(({ data: result = {} })=>{
           const { data = {}, success } = result;
           if (success){
             const { productList = [], } = data;
             this.goods = this.goods.concat(productList);
-            this.page++;
+            this.$refs.waterfall.waterfallOver();
           }
         }).catch((error)=>{
           console.error('error:', error);
         });
       },
-      pullDownMove(pullDownDistance) {
-        this.pullDownDistance = pullDownDistance
+      pullUp(){
+        this.page = this.page + 1;
+        this.getData();
       },
       pullDownEnd(pullDownDistance) {
-        console.log('pullDownEnd');
         if(this.pullDownDistance > 50){
-          alert('下拉刷新')
+          this.page = 0;
+          this.getData();
         }
-        this.pullDownDistance = 0
       },
-      goDetail(good){
+      goDetail(event, { index, value }){
         const { groupId } = this.$route.query;
-        goDetail.bind(this)(good, 'goods', groupId);
+        goDetail.bind(this)(value, 'goods', groupId);
       },
       back(){
         this.$router.push({
@@ -74,8 +75,7 @@
       }
     },
     created() {
-      const { groupId } = this.$route.query;
-      this.getData(groupId);
+      this.getData();
     }
   }
 </script>

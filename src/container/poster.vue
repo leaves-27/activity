@@ -396,4 +396,7 @@
     font-size: 16px;
     color: #999;
   }
+  .v--modal{
+    height: 100px;
+  }
 </style>

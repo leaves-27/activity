@@ -5,11 +5,9 @@
         class="pic-wrapper"></div>
       <div class="good-detail">
         <div class="goods-name">{{ good.productName }}</div>
-        <div class="goods-price">{{ good.price }}</div>
-        <div class="price-desc">{{ good.priceDesc || 100 }}</div>
+        <div class="goods-price">{{ good.priceDesc || '' }}</div>
         <div class="goods-limit">有效期:{{ good.endTime }}</div>
       </div>
-
       <div
         @click="back"
         class="back-home"></div>
@@ -45,6 +43,29 @@
           const { data = {}, success } = result;
           if (success){
             this.good = data;
+            const { endTime = '', productId } = data;
+            if(endTime){
+              const timestamp = (new Date(endTime)).getTime();
+              const currentTimeTimestamp = new Date().getTime();
+              if (currentTimeTimestamp > timestamp) {
+                // alert(`您选择的此商品活动已过期`);
+                this.$modal.show({
+                  template: `
+                    <div>
+                      <p style="text-align: center;padding-top:15px;padding-bottom:15px;">{{ text }}</p>
+                    </div>
+                  `,
+                  props: ['text']
+                }, {
+                  text: '您选择的此商品活动已过期'
+                }, {
+                  height: 'auto',
+                  width: '90%'
+                });
+                // this.$modal.show('您选择的此商品活动已过期');
+                return;
+              }
+            }
           }
         }).catch((error)=>{
           console.error('error:', error);
@@ -77,7 +98,7 @@
             background-color #ffffff
             background-repeat no-repeat
             background-position center center
-            background-size auto 100%
+            background-size 100% auto
 
         .goods-name
             background #ffffff
@@ -86,7 +107,7 @@
             text-align left
             color #000000
             font-size 14px
-        .goods-price
+        .
             background #ffffff
             text-align left
             padding-left 12px

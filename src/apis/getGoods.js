@@ -4,7 +4,11 @@ export const getGoodsWithLayout = (groupId = '')=> axios.get('http://xh.zjlhhs.c
     groupId
   }
 });
-export const getGoods = (pageSize, currentPageNo, groupId)=> axios.get('http://xh.zjlhhs.com.cn/wap/haibao/product/list', {
+export const getGoods = ({
+  pageSize,
+  currentPageNo,
+  groupId
+})=> axios.get('http://xh.zjlhhs.com.cn/wap/haibao/product/list', {
   params: {
     pageSize,
     currentPageNo,
