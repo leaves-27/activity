@@ -2,13 +2,13 @@
   <div class="goods">
     <vueWaterfallEasy
       v-if="goods.length > 0"
-      ref="waterfall"
       :imgsArr="goods"
       :enablePullDownEvent="true"
-      srcKey="imageUrl"
       @click="goDetail"
       @scrollReachBottom="pullUp"
-      @pullDownEnd="pullDownEnd">
+      @pullDownEnd="pullDownEnd"
+      ref="waterfall"
+      srcKey="imageUrl">
     </vueWaterfallEasy>
     <div
       v-else
@@ -33,14 +33,15 @@
       return{
         goods: [],
         page: 1,
-        pullDownDistance: 0
+        pullDownDistance: 0,
+        pageSize: 10
       }
     },
     methods:{
       getData(){
         const { groupId } = this.$route.query;
         getGoods({
-          pageSize: 10,
+          pageSize: this.pageSize,
           currentPageNo: this.page,
           groupId
         }).then(({ data: result = {} })=>{
@@ -48,7 +49,10 @@
           if (success){
             const { productList = [], } = data;
             this.goods = this.goods.concat(productList);
-            this.$refs.waterfall.waterfallOver();
+
+            if (productList.length < this.pageSize && this.$refs.waterfall){
+              this.$refs.waterfall.waterfallOver();
+            }
           }
         }).catch((error)=>{
           console.error('error:', error);

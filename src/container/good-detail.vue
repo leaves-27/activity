@@ -1,12 +1,15 @@
 <template>
     <div class="goods" v-if="good">
       <div
-        :style="{ backgroundImage: 'url(' + good.imageUrl + ')' }"
+        :style="{
+          backgroundImage: `url('${good.imageUrl}')`
+        }"
         class="pic-wrapper"></div>
       <div class="good-detail">
         <div class="goods-name">{{ good.productName }}</div>
         <div class="goods-price">{{ good.priceDesc || '' }}</div>
-        <div class="goods-limit">有效期:{{ good.endTime }}</div>
+        <div class="goods-limit">有效期: {{ good.startTime }} ~ {{ good.endTime }}</div>
+        <div class="goods-desc">{{ good.productDesc }}</div>
       </div>
       <div
         @click="back"
@@ -43,29 +46,6 @@
           const { data = {}, success } = result;
           if (success){
             this.good = data;
-            const { endTime = '', productId } = data;
-            if(endTime){
-              const timestamp = (new Date(endTime)).getTime();
-              const currentTimeTimestamp = new Date().getTime();
-              if (currentTimeTimestamp > timestamp) {
-                // alert(`您选择的此商品活动已过期`);
-                this.$modal.show({
-                  template: `
-                    <div>
-                      <p style="text-align: center;padding-top:15px;padding-bottom:15px;">{{ text }}</p>
-                    </div>
-                  `,
-                  props: ['text']
-                }, {
-                  text: '您选择的此商品活动已过期'
-                }, {
-                  height: 'auto',
-                  width: '90%'
-                });
-                // this.$modal.show('您选择的此商品活动已过期');
-                return;
-              }
-            }
           }
         }).catch((error)=>{
           console.error('error:', error);
@@ -94,11 +74,11 @@
         .pic-wrapper
             text-align center
             overflow hidden
-            height 230px
+            height 260px
             background-color #ffffff
             background-repeat no-repeat
             background-position center center
-            background-size auto 100%
+            background-size contain
 
         .goods-name
             background #ffffff
@@ -111,15 +91,20 @@
             background #ffffff
             text-align left
             padding-left 12px
+            padding-right 12px
             line-height 27px
             font-size 16px
             color #ff3d00
             font-weight 600
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-all;
 
         .price-desc
           background #ffffff
           line-height 22px
           padding-left 12px
+          padding-right 12px
           text-align left
           color #000000
           font-size 14px
@@ -134,6 +119,18 @@
             text-align left
             padding-left 12px
             color #7e8c8d
+
+        .goods-desc
+          background #ffffff
+          line-height 22px
+          padding-left 12px
+          padding-right 12px
+          text-align left
+          color #000000
+          font-size 14px
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          word-break: break-all;
 
     .good-detail
         padding-top 15px
