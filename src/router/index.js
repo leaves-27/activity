@@ -10,8 +10,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'poster', //
-      component: poster
+      name: 'poster',
+      component: poster,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: '/good-detail',

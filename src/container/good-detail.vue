@@ -28,16 +28,17 @@
       },
       methods: {
         back(){
-          const { source = '' } = this.$route.query || {};
-          if (source === 'goods') {
-            this.$router.push({
-              path:'/goods',
-            })
-          } else {
-            this.$router.push({
-              path:'/',
-            })
-          }
+          this.$router.back();
+          // const { source = '' } = this.$route.query || {};
+          // if (source === 'goods') {
+          //   this.$router.push({
+          //     path:'/goods',
+          //   })
+          // } else {
+          //   this.$router.push({
+          //     path:'/',
+          //   })
+          // }
         }
       },
       mounted() {

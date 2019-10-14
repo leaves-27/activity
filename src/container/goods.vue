@@ -73,9 +73,10 @@
         goDetail.bind(this)(value, 'goods', groupId);
       },
       back(){
-        this.$router.push({
-          path:'/',
-        })
+        // this.$router.push({
+        //   path:'/',
+        // })
+        this.$router.back();
       }
     },
     created() {
