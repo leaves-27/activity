@@ -24,7 +24,10 @@ export default new Router({
     {
       path: '/goods',
       name: 'goods',
-      component: goods
+      component: goods,
+      meta: {
+        keepAlive: true
+      }
     }
   ]
 })

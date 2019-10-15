@@ -1,104 +1,108 @@
 <template>
     <div class="poster" >
       <div
-        ref="poster"
         class="poster_main">
-        <div
-          v-if="pages.length > 0"
-          :style="{ width: pagesWidth + 'px' }"
-          class="container">
+        <div v-if="!request.items.isFetching && request.items.isFetched" ref="poster">
           <div
-            v-for="(page, pageIndex) in pages"
-            class="page">
+            v-if="request.items.data.length > 0"
+            :style="{ width: pagesWidth + 'px' }"
+            class="container">
             <div
-              v-for="(row, rowIndex) in page.rows"
-              class="row" :style="{
-                flexBasis: !!row.height ? row.height + 'px' : 'auto',
-                flexGrow: !!!row.height && !!row.rowspan ? row.rowspan : 1,
-                flexShrink: !!row.height ? 0 : 1
-              }">
+              v-for="(page, pageIndex) in pages"
+              class="page">
               <div
-                v-for="(column, columnIndex) in row.columns"
-                class="column"
-                :style="{
-                    flexBasis: !!column.width ? column.width + 'px' : 'auto',
-                    flexGrow: !!!column.width && !!column.colspan ? column.colspan : 1,
-                    flexShrink: !!column.width ? 0 : 1
+                v-for="(row, rowIndex) in page.rows"
+                class="row" :style="{
+                  flexBasis: !!row.height ? row.height + 'px' : 'auto',
+                  flexGrow: !!!row.height && !!row.rowspan ? row.rowspan : 1,
+                  flexShrink: !!row.height ? 0 : 1
                 }">
                 <div
-                  v-if="!!column.rows"
-                  class="table">
+                  v-for="(column, columnIndex) in row.columns"
+                  class="column"
+                  :style="{
+                      flexBasis: !!column.width ? column.width + 'px' : 'auto',
+                      flexGrow: !!!column.width && !!column.colspan ? column.colspan : 1,
+                      flexShrink: !!column.width ? 0 : 1
+                  }">
                   <div
-                    v-for="(subRow, subRowIndex) in column.rows"
-                    :style="{
-                      flexBasis: !!subRow.height ? row.height + 'px' : 'auto',
-                      flexGrow: !!!subRow.height && !!row.rowspan ? row.rowspan : 1,
-                      flexShrink: !!subRow.height ? 0 : 1
-                    }"
-                    class="row">
+                    v-if="!!column.rows"
+                    class="table">
                     <div
-                      v-for="(subColumn, subColumnIndex) in subRow.columns"
+                      v-for="(subRow, subRowIndex) in column.rows"
                       :style="{
-                        flexBasis: !!subColumn.width ? subColumn.width + 'px' : 'auto',
-                        flexGrow: !!!subColumn.width && !!subColumn.colspan ? subColumn.colspan : 1,
-                        flexShrink: !!subColumn.width ? 0 : 1
+                        flexBasis: !!subRow.height ? row.height + 'px' : 'auto',
+                        flexGrow: !!!subRow.height && !!row.rowspan ? row.rowspan : 1,
+                        flexShrink: !!subRow.height ? 0 : 1
                       }"
-                      class="column">
+                      class="row">
                       <div
-                        v-if="!!subColumn.rows"
-                        class="table">
+                        v-for="(subColumn, subColumnIndex) in subRow.columns"
+                        :style="{
+                          flexBasis: !!subColumn.width ? subColumn.width + 'px' : 'auto',
+                          flexGrow: !!!subColumn.width && !!subColumn.colspan ? subColumn.colspan : 1,
+                          flexShrink: !!subColumn.width ? 0 : 1
+                        }"
+                        class="column">
                         <div
-                          v-for="(subSubRow, subRowIndex) in subColumn.rows"
-                          :style="{
-                            flexBasis: !!subSubRow.height ? subSubRow.height + 'px' : 'auto',
-                            flexGrow: !!!subSubRow.height && !!subSubRow.rowspan ? subSubRow.rowspan : 1,
-                            flexShrink: !!subSubRow.height ? 0 : 1
-                          }"
-                          class="row">
+                          v-if="!!subColumn.rows"
+                          class="table">
                           <div
-                            v-for="(subSubColumn, subColumnIndex) in subSubRow.columns"
+                            v-for="(subSubRow, subRowIndex) in subColumn.rows"
                             :style="{
-                              flexBasis: !!subSubColumn.width ? subSubColumn.width + 'px' : 'auto',
-                              flexGrow: !!!subSubColumn.width && !!subSubColumn.colspan ? subSubColumn.colspan : 1,
-                              flexShrink: !!subSubColumn.width ? 0 : 1
+                              flexBasis: !!subSubRow.height ? subSubRow.height + 'px' : 'auto',
+                              flexGrow: !!!subSubRow.height && !!subSubRow.rowspan ? subSubRow.rowspan : 1,
+                              flexShrink: !!subSubRow.height ? 0 : 1
                             }"
-                            class="column">
+                            class="row">
                             <div
-                              v-if="subSubColumn.product"
-                              class="good"
-                              @click="goDetail(subSubColumn.product)">
-                              <img :src="subSubColumn.product.imageUrl" />
+                              v-for="(subSubColumn, subColumnIndex) in subSubRow.columns"
+                              :style="{
+                                flexBasis: !!subSubColumn.width ? subSubColumn.width + 'px' : 'auto',
+                                flexGrow: !!!subSubColumn.width && !!subSubColumn.colspan ? subSubColumn.colspan : 1,
+                                flexShrink: !!subSubColumn.width ? 0 : 1
+                              }"
+                              class="column">
+                              <div
+                                v-if="subSubColumn.product"
+                                class="good"
+                                @click="goDetail(subSubColumn.product)">
+                                <img :src="subSubColumn.product.imageUrl" />
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div v-else>
-                        <div
-                          v-if="subColumn.product"
-                          class="good"
-                          @click="goDetail(subColumn.product)">
-                          <img :src="subColumn.product.imageUrl" />
+                        <div v-else>
+                          <div
+                            v-if="subColumn.product"
+                            class="good"
+                            @click="goDetail(subColumn.product)">
+                            <img :src="subColumn.product.imageUrl" />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div v-else>
-                  <div
-                    v-if="column.product"
-                    class="good"
-                    @click="goDetail(column.product)">
-                    <img :src="column.product.imageUrl" />
+                  <div v-else>
+                    <div
+                      v-if="column.product"
+                      class="good"
+                      @click="goDetail(column.product)">
+                      <img :src="column.product.imageUrl" />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <div
+            v-else
+            class="empty"
+          > 暂无活动商品 </div>
         </div>
-        <div
-          v-else
-          class="empty"
-        > 暂无活动商品 </div>
+        <div v-else style="display: flex;justify-content: center;align-items: center;height: 100%;">
+          loading...
+        </div>
       </div>
       <div class="poster_footer">
         <div class="footer_left">
@@ -141,7 +145,13 @@
         data(){
             const { pageHeight } = getBrowserInterfaceSize();
             return {
-                originData: [],
+                request: {
+                  items: {
+                    isFetching: false,
+                    isFetched: false,
+                    data: []
+                  },
+                },
                 selectedId: '1',
                 page: 1,
                 isVisible:false,
@@ -155,7 +165,7 @@
         computed: {
           menus(){
             const menus = [];
-            this.originData.forEach((item, index)=>{
+            this.request.items.data.forEach((item, index)=>{
               const { actId, actName } = item;
               const startIndex = this.pages.findIndex((page)=>{
                 return page.actId * 1 === actId * 1;
@@ -170,7 +180,7 @@
           },
           pages(){
             const pages = [];
-            this.originData.forEach((item)=>{
+            this.request.items.data.forEach((item)=>{
               const { pages: activityPages } = item;
               pages.push(...activityPages);
             });
@@ -255,17 +265,28 @@
           },
           getData(){
             const groupId = this.getActId();
+            this.request.isFetching = true;
             getGoods(groupId).then(({ data: result = {} })=>{
               const { data = {}, success } = result;
               if (success){
                 const { actDetailList = [], groupId } = data;
-                this.originData = actDetailList;
+                this.request.items.data = actDetailList;
+                this.request.items.isFetching = false;
+                this.request.items.isFetched = true;
                 if (!!groupId){
                   this.groupId = groupId;
                 }
-                this.initScroll();
+
                 const { id } = this.menus[0] || {};
                 this.selectedId = id;
+
+                // setTimeout(()=>{
+                //
+                // }, 100);
+
+                this.$nextTick(()=>{
+                  this.initScroll();
+                });
               }
             }).catch((error)=>{
               console.error('error:', error);
