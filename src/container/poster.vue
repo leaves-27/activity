@@ -280,10 +280,6 @@
                 const { id } = this.menus[0] || {};
                 this.selectedId = id;
 
-                // setTimeout(()=>{
-                //
-                // }, 100);
-
                 this.$nextTick(()=>{
                   this.initScroll();
                 });
@@ -303,6 +299,12 @@
             this.getData();
           }
         },
+        activated() {
+          if(this.bs){
+            this.bs.refresh();
+          }
+        },
+
     }
 </script>
 

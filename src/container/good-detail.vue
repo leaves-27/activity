@@ -41,6 +41,10 @@
         }).catch((error)=>{
           console.error('error:', error);
         });
+      },
+      beforeRouteLeave (to, from, next) {
+        to.meta.keepAlive = true;
+        next();
       }
   }
 </script>
