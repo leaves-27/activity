@@ -1,19 +1,22 @@
 <template>
   <div class="goods">
-    <vueWaterfallEasy
-      v-if="goods.length > 0"
-      :imgsArr="goods"
-      :enablePullDownEvent="true"
-      @click="goDetail"
-      @scrollReachBottom="pullUp"
-      @pullDownEnd="pullDownEnd"
-      ref="waterfall"
-      srcKey="imageUrl">
-    </vueWaterfallEasy>
-    <div
-      v-else
-      class="empty"
-    > 暂无活动商品</div>
+    <div v-if="request.goods.isFetching" style="height: 100%;">
+      <vueWaterfallEasy
+        v-if="request.goods.data.length > 0"
+        :imgsArr="request.goods.data"
+        :enablePullDownEvent="true"
+        @click="goDetail"
+        @scrollReachBottom="pullUp"
+        @pullDownEnd="pullDownEnd"
+        ref="waterfall"
+        srcKey="imageUrl">
+        <div slot="waterfall-over"></div>
+      </vueWaterfallEasy>
+      <div
+        v-else
+        class="empty"
+      > 暂无活动商品</div>
+    </div>
     <div
       @click="back"
       class="back-home"></div>
@@ -31,7 +34,13 @@
     },
     data(){
       return{
-        goods: [],
+        request: {
+          goods: {
+            isFetching: false,
+            isFetched: false,
+            data: []
+          },
+        },
         page: 1,
         pullDownDistance: 0,
         pageSize: 10
@@ -46,15 +55,17 @@
           groupId
         }).then(({ data: result = {} })=>{
           const { data = {}, success } = result;
-          if (success){
-            const { productList = [], } = data;
-            this.goods = this.goods.concat(productList);
+          this.request.goods.isFetching = true;
 
+          if (success){
+            const { productList = [] } = data;
+            this.request.goods.data = this.request.goods.data.concat(productList);
             if (productList.length < this.pageSize && this.$refs.waterfall){
               this.$refs.waterfall.waterfallOver();
             }
           }
         }).catch((error)=>{
+          this.request.goods.isFetching = true;
           console.error('error:', error);
         });
       },
@@ -77,6 +88,7 @@
       }
     },
     created() {
+      this.request.goods.isFetching = false;
       this.getData();
     }
   }
