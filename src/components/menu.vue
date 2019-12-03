@@ -40,7 +40,8 @@
       opacity 0
 
     .nav-list-wrapper
-      width 172px
+      /*width 172px*/
+      display inline-block
       height 100%
       background #ffffff
       text-align left
@@ -75,10 +76,16 @@
             line-height 32px
             font-size 14px
             padding-left 22px
+            padding-right: 40px;
+            max-width: 230px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
             &:active
               background #dedadc
             &.active
               background #dedadc url("../assets/hot.svg") no-repeat calc(100% - 22px) /17px auto
+              background-position: calc(100% - 12px) center;
 
 
 </style>
